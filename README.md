@@ -31,6 +31,13 @@ Compared with the original upstream project, this branch focuses on keeping the 
 
 Because `pdf2htmlEX` depends on tightly matched Poppler and FontForge versions, installation is more specialized than a typical single-package build.
 
+Before choosing a method, clone the repository if you plan to build from source:
+
+```bash
+git clone https://github.com/pdf2htmlEX/pdf2htmlEX.git
+cd pdf2htmlEX
+```
+
 ### Option 1: Use a prebuilt release
 
 If you just want to use the converter, start with the project releases. The repository includes build tooling for distributing:
@@ -42,6 +49,13 @@ If you just want to use the converter, start with the project releases. The repo
 See the GitHub releases page for downloadable artifacts:
 
 - <https://github.com/pdf2htmlEX/pdf2htmlEX/releases>
+
+Basic install flow:
+
+1. Open the releases page.
+2. Download the artifact that matches your environment, such as a Debian package, AppImage, or container image.
+3. Install or run that artifact using the standard tool for your platform.
+4. Verify the installation with `pdf2htmlEX --version`.
 
 ### Option 2: Build locally with the provided scripts
 
@@ -55,6 +69,15 @@ From the repository root:
 ./buildScripts/buildInstallLocallyApt
 ```
 
+Step by step, this is:
+
+1. Clone the repository and change into it.
+2. Run `./buildScripts/buildInstallLocallyApt`.
+3. Let the script install the required build tools and development libraries.
+4. Wait while the script downloads and builds compatible Poppler and FontForge versions.
+5. Let the script build and install `pdf2htmlEX`.
+6. Confirm the binary is available with `pdf2htmlEX --version`.
+
 This script installs build dependencies, downloads compatible Poppler and FontForge sources, builds them statically, then builds and installs `pdf2htmlEX`.
 
 #### Alpine Linux
@@ -62,6 +85,24 @@ This script installs build dependencies, downloads compatible Poppler and FontFo
 ```bash
 ./buildScripts/buildInstallLocallyAlpine
 ```
+
+Typical Alpine flow:
+
+1. Clone the repository and change into it.
+2. Run `./buildScripts/buildInstallLocallyAlpine`.
+3. Allow the script to install Alpine build dependencies.
+4. Wait for the helper script to build the pinned dependency stack and `pdf2htmlEX`.
+5. Verify the installation with `pdf2htmlEX --version`.
+
+#### After installation
+
+Run a quick smoke test on any PDF file:
+
+```bash
+pdf2htmlEX sample.pdf
+```
+
+If the command succeeds, you should see an HTML file generated in the current directory.
 
 #### Build details
 
