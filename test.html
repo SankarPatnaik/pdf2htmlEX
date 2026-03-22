@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .pdf-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .pdf-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .pdf-page {
+            padding: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .pdf-page:last-child {
+            border-bottom: none;
+        }
+        
+        .page-number {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .text-block {
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+        
+        .text-span {
+            display: inline;
+        }
+        
+        .bold {
+            font-weight: bold;
+        }
+        
+        .italic {
+            font-style: italic;
+        }
+        
+        .pdf-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .drawing-element {
+            position: absolute;
+            border: 1px solid #ccc;
+        }
+        
+        @media print {
+            .pdf-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .pdf-page {
+                page-break-after: always;
+            }
+            
+            .pdf-page:last-child {
+                page-break-after: auto;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="pdf-container">
+        <h1 class="pdf-title">test</h1>
+        <div class="pdf-page" id="page-1">
+            <div class="page-number">Page 1</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.0px">http://JUDIS.NIC.IN </span>
+<span class="text-span bold" style="font-size: 10.0px">SUPREME COURT OF INDIA</span>
+<span class="text-span bold" style="font-size: 10.0px">Page 1 of 5 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">CASE NO.:</span>
+<span class="text-span" style="font-size: 10.0px">Appeal (civil) 5028  of  1999</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">PETITIONER:</span>
+<span class="text-span" style="font-size: 10.0px">R. LAKSHMI NARAYAN</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">        Vs.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">RESPONDENT:</span>
+<span class="text-span" style="font-size: 10.0px">SANTHI</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">DATE OF JUDGMENT:       01/05/2001</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">BENCH:</span>
+<span class="text-span" style="font-size: 10.0px">D.P. Mohapatra &amp; U.C. Banerjee</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">JUDGMENT:</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">D.P.MOHAPATRA ,J.</span>
+<span class="text-span" style="font-size: 10.0px">L...I...T.......T.......T.......T.......T.......T.......T..J</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    On  analysis  of  the  case  of  the  parties  and   the</span>
+<span class="text-span" style="font-size: 10.0px">contentions  raised by learned counsel on their behalf,  the</span>
+<span class="text-span" style="font-size: 10.0px">question  that  arises  for  determination  is  whether  the</span>
+<span class="text-span" style="font-size: 10.0px">appellant  has established a case for declaring the marriage</span>
+<span class="text-span" style="font-size: 10.0px">null and void under section 12(1)(b) read with Section 5(ii)</span>
+<span class="text-span" style="font-size: 10.0px">of the Hindu Marriage Act, 1955 ?</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    The  appellant  is the husband of the respondent.   They</span>
+<span class="text-span" style="font-size: 10.0px">were  married according to Hindu rites and rituals on  1-11-</span>
+<span class="text-span" style="font-size: 10.0px">1987.   It is relevant to note here that it was an  arranged</span>
+<span class="text-span" style="font-size: 10.0px">marriage  and the decision was taken after the appellant had</span>
+<span class="text-span" style="font-size: 10.0px">met  the  respondent  and talked with  her.   After  staying</span>
+<span class="text-span" style="font-size: 10.0px">together  for  about  25  days the  couple  parted  company.</span>
+<span class="text-span" style="font-size: 10.0px">Thereafter  the  appellant  filed a petition  under  section</span>
+<span class="text-span" style="font-size: 10.0px">5(ii)  read  with  section 12(1)(b) on 12.2.1988  seeking  a</span>
+<span class="text-span" style="font-size: 10.0px">declaration  that  the  marriage  is null and  void  as  the</span>
+<span class="text-span" style="font-size: 10.0px">respondent  suffers  from  chronic   and  incurable   mental</span>
+<span class="text-span" style="font-size: 10.0px">disorder  and is not in a fit mental state to lead a married</span>
+<span class="text-span" style="font-size: 10.0px">life.   In  support of his case the appellant alleged  inter</span>
+<span class="text-span" style="font-size: 10.0px">alia  that on the night of the marriage he found  respondent</span>
+<span class="text-span" style="font-size: 10.0px">to  be drowsy;  she refused to have cohabitation;  on  being</span>
+<span class="text-span" style="font-size: 10.0px">questioned  by him she said that she has been suffering from</span>
+<span class="text-span" style="font-size: 10.0px">mental  disorder  since her childhood;  she did not want  to</span>
+<span class="text-span" style="font-size: 10.0px">have  any marriage relationship, but under pressure from her</span>
+<span class="text-span" style="font-size: 10.0px">parents  the marriage with the appellant was performed.  The</span>
+<span class="text-span" style="font-size: 10.0px">appellant further alleged that when father of the respondent</span>
+<span class="text-span" style="font-size: 10.0px">was  informed  about  her physical and mental  condition  he</span>
+<span class="text-span" style="font-size: 10.0px">disclosed  that  his daughter has been under  treatment  for</span>
+<span class="text-span" style="font-size: 10.0px">some  mental disease and gave the prescription given by  the</span>
+<span class="text-span" style="font-size: 10.0px">doctor.   The appellant pleaded that he and his father  made</span>
+<span class="text-span" style="font-size: 10.0px">attempts  for curing the respondent of the ailment  suffered</span>
+<span class="text-span" style="font-size: 10.0px">by  her  but  such  attempts   proved  futile.   Under  such</span>
+<span class="text-span" style="font-size: 10.0px">compelling  circumstances he filed the petition seeking  the</span>
+<span class="text-span" style="font-size: 10.0px">declaration that the marriage was null and void.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    Respondent   in  her  written   statement  refuted   the</span>
+<span class="text-span" style="font-size: 10.0px">allegations  made  in the petition/plaint.  She denied  that</span>
+<span class="text-span" style="font-size: 10.0px">she suffered from any mental disorder, far less of a chronic</span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-2">
+            <div class="page-number">Page 2</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.0px">http://JUDIS.NIC.IN </span>
+<span class="text-span bold" style="font-size: 10.0px">SUPREME COURT OF INDIA</span>
+<span class="text-span bold" style="font-size: 10.0px">Page 2 of 5 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">and  incurable  nature.   She also denied that  she  had  no</span>
+<span class="text-span" style="font-size: 10.0px">cohabitation with her husband or that she had expressed that</span>
+<span class="text-span" style="font-size: 10.0px">she  was  not  interested  in  leading  married  life.   She</span>
+<span class="text-span" style="font-size: 10.0px">asserted  that  immediately after the marriage she  and  her</span>
+<span class="text-span" style="font-size: 10.0px">husband  lead a happy married life;  they went to  different</span>
+<span class="text-span" style="font-size: 10.0px">places  and visited temples.  She also asserted that she has</span>
+<span class="text-span" style="font-size: 10.0px">all  along  been ready and willing to lead a normal  marital</span>
+<span class="text-span" style="font-size: 10.0px">life with the appellant;  but the appellant is interested in</span>
+<span class="text-span" style="font-size: 10.0px">having  a  second  marriage so that he may get  more  dowry.</span>
+<span class="text-span" style="font-size: 10.0px">According to the respondent the reason for which she has not</span>
+<span class="text-span" style="font-size: 10.0px">been  able  to  lead a normal family life is on  account  of</span>
+<span class="text-span" style="font-size: 10.0px">refusal  of the appellant to share the marital  relationship</span>
+<span class="text-span" style="font-size: 10.0px">with her.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    The  trial  court  on assessing the evidence  on  record</span>
+<span class="text-span" style="font-size: 10.0px">dismissed the petition filed by the appellant holding, inter</span>
+<span class="text-span" style="font-size: 10.0px">alia,  that  he had failed to establish that the  respondent</span>
+<span class="text-span" style="font-size: 10.0px">was  suffering from any mental disorder or that there was no</span>
+<span class="text-span" style="font-size: 10.0px">cohabitation  or that the respondent was not in a fit mental</span>
+<span class="text-span" style="font-size: 10.0px">state to lead a married life.  The trial court which had the</span>
+<span class="text-span" style="font-size: 10.0px">privilege  of  observing  the respondent as  a  witness  and</span>
+<span class="text-span" style="font-size: 10.0px">watching her demeanor made the following observations in the</span>
+<span class="text-span" style="font-size: 10.0px">judgment:</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    The  respondent  was examined in this court from  11.25</span>
+<span class="text-span" style="font-size: 10.0px">a.m.   to  1.25 p.m.  During the enquiry, it did not  appear</span>
+<span class="text-span" style="font-size: 10.0px">from her activities that her mental condition and activities</span>
+<span class="text-span" style="font-size: 10.0px">had been affected.  She has given answer very clearly to the</span>
+<span class="text-span" style="font-size: 10.0px">questions posed by the petitioners advocate.  This court is</span>
+<span class="text-span" style="font-size: 10.0px">not a medical expert.  But there was an opportunity to watch</span>
+<span class="text-span" style="font-size: 10.0px">the activities and movements of the respondent.  Since it is</span>
+<span class="text-span" style="font-size: 10.0px">not  proved  from  the  activities and the  letters  of  the</span>
+<span class="text-span" style="font-size: 10.0px">respondent  that she had incurable mental disease and  since</span>
+<span class="text-span" style="font-size: 10.0px">the  marital  relationship is fulfilled by the  cohabitation</span>
+<span class="text-span" style="font-size: 10.0px">between  the  petitioner and the respondent, it  is  decided</span>
+<span class="text-span" style="font-size: 10.0px">that  the respondent is fit for marital relationship and she</span>
+<span class="text-span" style="font-size: 10.0px">is  not  affected  by mental disease Since the  petition  is</span>
+<span class="text-span" style="font-size: 10.0px">filed  within  a year from 1.11.1987, the date of  marriage,</span>
+<span class="text-span" style="font-size: 10.0px">this petition is not sustainable under law and it is decided</span>
+<span class="text-span" style="font-size: 10.0px">that this marriage is not fit to be declared null and void.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    On  appeal  by the appellant the appellate  court  found</span>
+<span class="text-span" style="font-size: 10.0px">fault  with  the judgment of the trial court on  the  ground</span>
+<span class="text-span" style="font-size: 10.0px">that  the  trial  judge had not considered  the  documentary</span>
+<span class="text-span" style="font-size: 10.0px">evidence  in  the case including the prescription issued  by</span>
+<span class="text-span" style="font-size: 10.0px">Dr.   Papa Kumari of Chennai.  The Court held that within  a</span>
+<span class="text-span" style="font-size: 10.0px">few  days of the marriage the spouses had parted company and</span>
+<span class="text-span" style="font-size: 10.0px">thereafter  there  has  been no meeting between  them.   The</span>
+<span class="text-span" style="font-size: 10.0px">appellate  court  accepted  the case of the  appellant  that</span>
+<span class="text-span" style="font-size: 10.0px">there  was  no  cohabitation  between  the  parties  to  the</span>
+<span class="text-span" style="font-size: 10.0px">marriage.   Taking  note of certain statements made  by  the</span>
+<span class="text-span" style="font-size: 10.0px">respondent  in  her evidence the appellate court found  that</span>
+<span class="text-span" style="font-size: 10.0px">she  has admitted that she has been suffering from a  mental</span>
+<span class="text-span" style="font-size: 10.0px">disorder  from her childhood;  that she was given  injection</span>
+<span class="text-span" style="font-size: 10.0px">once  in  a  month and used to take drugs whenever  she  had</span>
+<span class="text-span" style="font-size: 10.0px">headache.  On such findings the appellate court reversed the</span>
+<span class="text-span" style="font-size: 10.0px">judgment  of the trial court and allowed the petition  filed</span>
+<span class="text-span" style="font-size: 10.0px">by the appellant.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    The second appeal filed by the respondent was allowed by</span>
+<span class="text-span" style="font-size: 10.0px">the  High  Court, the judgment of the first appellate  court</span>
+<span class="text-span" style="font-size: 10.0px">was  reversed  and  the  judgment of  the  trial  court  was</span>
+<span class="text-span" style="font-size: 10.0px">restored.   The  High  Court, as appears on perusal  of  the</span>
+<span class="text-span" style="font-size: 10.0px">judgment,  mainly  considered  the   question  whether   the</span>
+<span class="text-span" style="font-size: 10.0px">appellant  was aware of the physical and mental disorder  of</span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-3">
+            <div class="page-number">Page 3</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.0px">http://JUDIS.NIC.IN </span>
+<span class="text-span bold" style="font-size: 10.0px">SUPREME COURT OF INDIA</span>
+<span class="text-span bold" style="font-size: 10.0px">Page 3 of 5 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">the  respondent  before the marriage.  The High  Court  held</span>
+<span class="text-span" style="font-size: 10.0px">that   the   marriage  was  not   vitiated   by   fraud   or</span>
+<span class="text-span" style="font-size: 10.0px">misrepresentation.   The appellant (husband) had opportunity</span>
+<span class="text-span" style="font-size: 10.0px">to  meet the respondent (wife) and to know her physical  and</span>
+<span class="text-span" style="font-size: 10.0px">mental  condition.  The Court did not accept the case of the</span>
+<span class="text-span" style="font-size: 10.0px">appellant that the respondent was suffering from chronic and</span>
+<span class="text-span" style="font-size: 10.0px">incurable mental disorder and that there was no cohabitation</span>
+<span class="text-span" style="font-size: 10.0px">between the parties.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    The  appellant husband has filed this appeal by  special</span>
+<span class="text-span" style="font-size: 10.0px">leave  under Article 136 of the Constitution, assailing  the</span>
+<span class="text-span" style="font-size: 10.0px">judgment of the High Court.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    Since the decision in the case depends on interpretation</span>
+<span class="text-span" style="font-size: 10.0px">of  sections 5(ii) (a) and (b) and section 12(1)(b) the said</span>
+<span class="text-span" style="font-size: 10.0px">sections are quoted hereunder for convenience of reference :</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    5.  Conditions for a Hindu marriage  A marriage may be</span>
+<span class="text-span" style="font-size: 10.0px">solemnized   between  any  two   Hindus,  if  the  following</span>
+<span class="text-span" style="font-size: 10.0px">conditions are fulfilled, namely:-</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">(i) Xxx         xxx             xxx</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">(ii) at the time of the marriage,</span>
+<span class="text-span" style="font-size: 10.0px">neither party</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    (a)  is  incapable  of giving a valid consent to  it  in</span>
+<span class="text-span" style="font-size: 10.0px">consequence of unsoundness of mind;  or</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    (b)  though capable of giving a valid consent, has  been</span>
+<span class="text-span" style="font-size: 10.0px">suffering  from mental disorder of such a kind or to such an</span>
+<span class="text-span" style="font-size: 10.0px">extent  as  to be unfit for marriage and the procreation  of</span>
+<span class="text-span" style="font-size: 10.0px">children;</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">12. Voidable Marriages (1) Any</span>
+<span class="text-span" style="font-size: 10.0px">marriage solemnized, whether</span>
+<span class="text-span" style="font-size: 10.0px">before or after the</span>
+<span class="text-span" style="font-size: 10.0px">commencement of this Act, shall</span>
+<span class="text-span" style="font-size: 10.0px">be voidable and may be annulled</span>
+<span class="text-span" style="font-size: 10.0px">by a decree of nullity on any of</span>
+<span class="text-span" style="font-size: 10.0px">the following grounds , namely</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    xxx         xxx     xxxx</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    (b)that   the  marriage  is  in  contravention  of   the</span>
+<span class="text-span" style="font-size: 10.0px">conditions specified in clause (ii) of section 5.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    Section  5  provides that a marriage may  be  solemnized</span>
+<span class="text-span" style="font-size: 10.0px">between  any  two Hindus if the conditions specified in  the</span>
+<span class="text-span" style="font-size: 10.0px">section  are fulfilled.  Amongst the other conditions stated</span>
+<span class="text-span" style="font-size: 10.0px">therein in sub-section (ii) it is laid down that at the time</span>
+<span class="text-span" style="font-size: 10.0px">of  marriage  neither party is incapable of giving  a  valid</span>
+<span class="text-span" style="font-size: 10.0px">consent  to  it  in consequence of unsoundness  of  mind  or</span>
+<span class="text-span" style="font-size: 10.0px">though capable of giving a valid consent, has been suffering</span>
+<span class="text-span" style="font-size: 10.0px">from  mental disorder of such a kind or to such an extent as</span>
+<span class="text-span" style="font-size: 10.0px">to  be  unfit for marriage and the procreation of  children.</span>
+<span class="text-span" style="font-size: 10.0px">The  clause  lays down as one of the conditions for a  Hindu</span>
+<span class="text-span" style="font-size: 10.0px">marriage   that  neither  party   must  be  suffering   from</span>
+<span class="text-span" style="font-size: 10.0px">unsoundness  of mind, mental disorder, insanity or  epilepsy</span>
+<span class="text-span" style="font-size: 10.0px">and  section  12(1)(b)  refers that any  marriage  shall  be</span>
+<span class="text-span" style="font-size: 10.0px">voidable  and  may  be  annulled  if  the  marriage  is   in</span>
+<span class="text-span" style="font-size: 10.0px">contravention  of the condition specified in clause (ii)  of</span>
+<span class="text-span" style="font-size: 10.0px">section  5.  On a plain reading of the said provision it  is</span>
+<span class="text-span" style="font-size: 10.0px">manifest  that the conditions prescribed in that section, if</span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-4">
+            <div class="page-number">Page 4</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.0px">http://JUDIS.NIC.IN </span>
+<span class="text-span bold" style="font-size: 10.0px">SUPREME COURT OF INDIA</span>
+<span class="text-span bold" style="font-size: 10.0px">Page 4 of 5 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">established, disentitles the party to a valid marriage.  The</span>
+<span class="text-span" style="font-size: 10.0px">marriage  is not per se void but voidable under the  clause.</span>
+<span class="text-span" style="font-size: 10.0px">Such conditions in the very nature of things call for strict</span>
+<span class="text-span" style="font-size: 10.0px">standard  of proof.  The onus of proof is very heavy on  the</span>
+<span class="text-span" style="font-size: 10.0px">party  who  approaches  the Court for  breaking  a  marriage</span>
+<span class="text-span" style="font-size: 10.0px">already solemnized.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    An  objection  to  a marriage on the  ground  of  mental</span>
+<span class="text-span" style="font-size: 10.0px">incapacity must depend on a question of degree of the defect</span>
+<span class="text-span" style="font-size: 10.0px">in  order  to rebut the validity of a marriage which has  in</span>
+<span class="text-span" style="font-size: 10.0px">fact  taken place.  As noted earlier, the onus of bringing a</span>
+<span class="text-span" style="font-size: 10.0px">case  under  this clause lies heavily on the petitioner  who</span>
+<span class="text-span" style="font-size: 10.0px">seeks annulment of the marriage on the ground of unsoundness</span>
+<span class="text-span" style="font-size: 10.0px">of  mind  or  mental disorder.  The court will  examine  the</span>
+<span class="text-span" style="font-size: 10.0px">matter with all possible care and anxiety.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    Bearing  in  mind the principles which flow from a  fair</span>
+<span class="text-span" style="font-size: 10.0px">reading  of the statutory provisions noted above we  proceed</span>
+<span class="text-span" style="font-size: 10.0px">to   examine   whether  the   appellant  has  succeeded   in</span>
+<span class="text-span" style="font-size: 10.0px">establishing  the  case for declaring the marriage null  and</span>
+<span class="text-span" style="font-size: 10.0px">void  on the ground of mental incapacity of his wife at  the</span>
+<span class="text-span" style="font-size: 10.0px">time  of marriage.  Even accepting the findings recorded  by</span>
+<span class="text-span" style="font-size: 10.0px">the  first appellate court which decided the case in  favour</span>
+<span class="text-span" style="font-size: 10.0px">of  the appellant as correct then the position that  emerges</span>
+<span class="text-span" style="font-size: 10.0px">is  that  the respondent has been under treatment  for  some</span>
+<span class="text-span" style="font-size: 10.0px">mental  problem before the marriage;  and that there was  no</span>
+<span class="text-span" style="font-size: 10.0px">cohabitation  between the parties during the period of about</span>
+<span class="text-span" style="font-size: 10.0px">one  month  during  which they stayed  together.   On  these</span>
+<span class="text-span" style="font-size: 10.0px">findings  can  it  be  held that a case  for  declaring  the</span>
+<span class="text-span" style="font-size: 10.0px">marriage  to  be  invalid under section 12(1)(b)  read  with</span>
+<span class="text-span" style="font-size: 10.0px">section  5 (ii)(b) has been established.  It is not the case</span>
+<span class="text-span" style="font-size: 10.0px">of the appellant that the respondent was incapable of giving</span>
+<span class="text-span" style="font-size: 10.0px">valid  consent to the marriage in consequence of unsoundness</span>
+<span class="text-span" style="font-size: 10.0px">of  mind  at the time of marriage.  From the facts found  by</span>
+<span class="text-span" style="font-size: 10.0px">the  appellate  court it cannot be held that the  respondent</span>
+<span class="text-span" style="font-size: 10.0px">has been suffering from mental disorder of such a kind or to</span>
+<span class="text-span" style="font-size: 10.0px">such  an extent as to be unfit for marriage and  procreation</span>
+<span class="text-span" style="font-size: 10.0px">of children.  To draw such an inference merely from the fact</span>
+<span class="text-span" style="font-size: 10.0px">that  the spouses had no cohabitation for a short period  of</span>
+<span class="text-span" style="font-size: 10.0px">about  a  month, is neither reasonable nor permissible.   To</span>
+<span class="text-span" style="font-size: 10.0px">brand  the  wife  as unfit for marriage and  procreation  of</span>
+<span class="text-span" style="font-size: 10.0px">children  on  account of the mental disorder it needs to  be</span>
+<span class="text-span" style="font-size: 10.0px">established  that  the ailment suffered by her is of such  a</span>
+<span class="text-span" style="font-size: 10.0px">kind or such an extent that it is impossible for her to lead</span>
+<span class="text-span" style="font-size: 10.0px">a  normal married life.  This is the requirement of the  law</span>
+<span class="text-span" style="font-size: 10.0px">as appears on fair reading of the statutory provisions.  The</span>
+<span class="text-span" style="font-size: 10.0px">appellate  court  has  also not specifically  given  such  a</span>
+<span class="text-span" style="font-size: 10.0px">finding.   Merely  giving a finding that the respondent  was</span>
+<span class="text-span" style="font-size: 10.0px">suffering  from  some mental disorder and she did  not  have</span>
+<span class="text-span" style="font-size: 10.0px">cohabitation  with her husband during the period they stayed</span>
+<span class="text-span" style="font-size: 10.0px">together  is  not  sufficient to comply with  the  condition</span>
+<span class="text-span" style="font-size: 10.0px">prescribed  under  section 5(ii)(b) of the Act.  We deem  it</span>
+<span class="text-span" style="font-size: 10.0px">relevant  to note here that the observations in the judgment</span>
+<span class="text-span" style="font-size: 10.0px">of  the trial court about the physical and mental  condition</span>
+<span class="text-span" style="font-size: 10.0px">of  the  respondent which have been noted earlier  indicates</span>
+<span class="text-span" style="font-size: 10.0px">the  position  that the requirement of section 5(ii)(b)  are</span>
+<span class="text-span" style="font-size: 10.0px">far  from  satisfied  from  the   materials  placed  by  the</span>
+<span class="text-span" style="font-size: 10.0px">appellant.   In  the circumstances the High Court cannot  be</span>
+<span class="text-span" style="font-size: 10.0px">faulted  for  having  dismissed the petition  filed  by  the</span>
+<span class="text-span" style="font-size: 10.0px">appellant  under section 12(1)(b) read with section 5(ii)(b)</span>
+<span class="text-span" style="font-size: 10.0px">of  the Act.  The judgment of the High Court is no doubt far</span>
+<span class="text-span" style="font-size: 10.0px">from  satisfactory.   The High Court has not formulated  any</span>
+<span class="text-span" style="font-size: 10.0px">question  of  law  in  the judgment  which  is  a  mandatory</span>
+<span class="text-span" style="font-size: 10.0px">requirement  under  section 100 C.P.C.  The High  Court  has</span>
+<span class="text-span" style="font-size: 10.0px">also not considered the relevant aspects of the matter other</span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-5">
+            <div class="page-number">Page 5</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.0px">http://JUDIS.NIC.IN </span>
+<span class="text-span bold" style="font-size: 10.0px">SUPREME COURT OF INDIA</span>
+<span class="text-span bold" style="font-size: 10.0px">Page 5 of 5 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">than  fraud and misrepresentation about mental condition  of</span>
+<span class="text-span" style="font-size: 10.0px">the respondent on the part of her parents at the time of the</span>
+<span class="text-span" style="font-size: 10.0px">marriage.  We have considered the submission made by learned</span>
+<span class="text-span" style="font-size: 10.0px">counsel  for  the appellant to remit the matter to the  High</span>
+<span class="text-span" style="font-size: 10.0px">Court  for  fresh  disposal.  We however, in  the  facts  as</span>
+<span class="text-span" style="font-size: 10.0px">above,  do not feel it expedient to do so.Our attention  has</span>
+<span class="text-span" style="font-size: 10.0px">not  been  drawn  to  any   material  on  record  which,  if</span>
+<span class="text-span" style="font-size: 10.0px">considered,  would have tilted the balance in favour of  the</span>
+<span class="text-span" style="font-size: 10.0px">appellant.   It is our considered view that on the facts and</span>
+<span class="text-span" style="font-size: 10.0px">circumstances of the case and the materials placed on record</span>
+<span class="text-span" style="font-size: 10.0px">this  is not a fit case for interfering with the judgment of</span>
+<span class="text-span" style="font-size: 10.0px">the High Court in exercise of jurisdiction under Article 136</span>
+<span class="text-span" style="font-size: 10.0px">of the Constitution.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.0px">    Accordingly   the  appeal  is   dismissed,  but  in  the</span>
+<span class="text-span" style="font-size: 10.0px">circumstances of the case without any order of costs.</span>
+</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test1</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .pdf-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .pdf-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .pdf-page {
+            padding: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .pdf-page:last-child {
+            border-bottom: none;
+        }
+        
+        .page-number {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .text-block {
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+        
+        .text-span {
+            display: inline;
+        }
+        
+        .bold {
+            font-weight: bold;
+        }
+        
+        .italic {
+            font-style: italic;
+        }
+        
+        .pdf-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .drawing-element {
+            position: absolute;
+            border: 1px solid #ccc;
+        }
+        
+        @media print {
+            .pdf-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .pdf-page {
+                page-break-after: always;
+            }
+            
+            .pdf-page:last-child {
+                page-break-after: auto;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="pdf-container">
+        <h1 class="pdf-title">Test1</h1>
+        <div class="pdf-page" id="page-1">
+            <div class="page-number">Page 1</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 11.999879837036133px">2026 INSC 263</span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">1 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">NON-REPORTABLE </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.559999465942383px"> </span>
+<span class="text-span bold">IN THE SUPREME COURT OF INDIA </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">CIVIL APPELLATE JURISDICTION </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 025516 – 025517 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">THE MANAGEMENT OF STEEL </span>
+<span class="text-span bold">AUTHORITY OF INDIA AND OTHERS  </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold">     … APPELLANT(S) </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold">  </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold">VERSUS </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">  </span>
+<span class="text-span bold">SHAMBHU PRASAD SINGH AND OTHERS </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold">  … RESPONDENT(S) </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH  </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 010175 – 010176 OF 2026 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 021316 – 021317 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH  </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 021318 – 021319 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 021320 – 021321 OF 2024 </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 025518 – 025521 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 026140 – 026141 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 026350 – 026351 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 4.690000057220459px">Digitally signed by</span>
+<span class="text-span" style="font-size: 4.690000057220459px">SNEHA DAS</span>
+<span class="text-span" style="font-size: 4.690000057220459px">Date: 2026.03.18</span>
+<span class="text-span" style="font-size: 4.690000057220459px">17:47:06 IST</span>
+<span class="text-span" style="font-size: 4.690000057220459px">Reason:</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 4.699999809265137px">Signature Not Verified</span>
+</div>
+            <div class="image-container">
+                <img src="data:image/png;base64,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" 
+                     alt="PDF Image 0" 
+                     class="pdf-image"
+                     width="310" 
+                     height="310">
+            </div>
+        </div>
+        <div class="pdf-page" id="page-2">
+            <div class="page-number">Page 2</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">2 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 026352 – 026353 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 026861 – 026862 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 026863 – 026864 OF 2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">WITH </span>
+<span class="text-span bold">CIVIL APPEAL NOS. __________ OF 2026 </span>
+<span class="text-span bold">@ SPECIAL LEAVE PETITION (CIVIL) NOS. 026865 – 026866 OF 2024 </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">J U D G M E N T  </span>
+</div>
+            <div class="text-block">
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="color: #00000a">S.V.N. BHATTI, J. </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">1.</span><span class="text-span bold"> </span>
+<span class="text-span">Leave Granted. </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">2.</span><span class="text-span bold"> </span>
+<span class="text-span">The batch of Civil Appeals arises from Civil Review Order dated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">16.05.2024 in Civil Review No. 45 of 2021, etc., and the Order dated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">20.01.2020 in LPA No. 561 of 2017 and batch. The questions of fact and law </span>
+</div>
+            <div class="text-block">
+<span class="text-span">are the same in the Civil Appeals. The Civil Appeals were heard on 09.03.2026 </span>
+</div>
+            <div class="text-block">
+<span class="text-span">and 11.03.2026, respectively, and reserved for judgment. Through the instant </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Judgment, the Civil Appeals are considered and disposed of.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">3.</span><span class="text-span bold"> </span>
+<span class="text-span">There are two types of cases before this Court. One type where the Writ </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Petition was decided after the Order dated 31.03.2017 of this Court in Civil </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Appeal No. 4740 of 2017, and the other is where the Writ Petition was decided </span>
+</div>
+            <div class="text-block">
+<span class="text-span">before the Order dated 31.03.2017 of this Court in Civil Appeal No. 4740 of </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-3">
+            <div class="page-number">Page 3</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">3 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">2017. To illustrate the two types of cases before this Court in the present </span>
+</div>
+            <div class="text-block">
+<span class="text-span">batch of Civil Appeals, a table is presented below:  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.079999923706055px">Case name</span><span class="text-span" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px">Writ Petition</span><span class="text-span" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px">LPA on</span><span class="text-span" style="font-size: 10.079999923706055px"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.079999923706055px">Civil </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px">Review </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px">decided on</span><span class="text-span" style="font-size: 10.079999923706055px"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.079999923706055px">WPs Dismissed </span><span class="text-span" style="font-size: 10.079999923706055px"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Bokaro Steel Plant &amp; Ors. v. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Shambhu Prasad Singh &amp; Ors.</span><span class="text-span" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span" style="font-size: 10.079999923706055px">(S.L.P.  (C) No. 25516-25517 of </span>
+<span class="text-span" style="font-size: 10.079999923706055px">2024) </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Filed on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">27.03.2012 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Decided on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">28.07.2016 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">LPA No. 561 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2017. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">20.01.2020 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Civil Review </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">No. 45 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2021. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">16.05.2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Bokaro Steel Plant &amp; Ors. v. Shiv </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Shankar Jha &amp; Ors.</span><span class="text-span" style="font-size: 10.079999923706055px"> (S.L.P.  (C) No. </span>
+<span class="text-span" style="font-size: 10.079999923706055px">21320-21321/2024) </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Filed in April 2011 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Decided on </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">28.07.2016  </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">LPA No. 428 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2016. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">20.01.2020 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Civil Review </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">23 of 2021 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">16.05.2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.079999923706055px">WPs Allowed </span><span class="text-span" style="font-size: 10.079999923706055px"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Bokaro Steel Plant &amp; Ors. v. Hira </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Devi &amp; Ors.</span><span class="text-span" style="font-size: 10.079999923706055px"> (S.L.P.  (C) No. 21316-</span>
+<span class="text-span" style="font-size: 10.079999923706055px">21317 of 2024) </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Filed in April 2011 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Decided on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">12.07.2017 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">LPA No. 490 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2017. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">20.01.2020 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Civil Review </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">No. 12 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2021. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">16.05.2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Bokaro Steel Plant &amp; Ors. v. Ganga </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Sagar Yadav &amp; Ors.</span><span class="text-span" style="font-size: 10.079999923706055px"> (S.L.P.  (C) No. </span>
+<span class="text-span" style="font-size: 10.079999923706055px">21318-21319 of 2024) </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Filed on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">23.11.2017 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Decided on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">11.09.2018 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">LPA No. 708 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2018. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">20.01.2020 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Civil Review </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">No. 13 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2021. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">16.05.2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Steel Authority of India v. Arvind </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Kumar &amp; Ors.</span><span class="text-span" style="font-size: 10.079999923706055px"> (S.L.P.  (C) No. </span>
+<span class="text-span" style="font-size: 10.079999923706055px">25518-25521/2024) </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Filed on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">31.07.2008 and </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">decided on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">11.04.2018 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">LPA No. 423 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2018.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">30.06.2020 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Civil Review </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">No. 44 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2021 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">25.04.2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Steel Authority of India v. Virendra </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Pratap Singh</span><span class="text-span" style="font-size: 10.079999923706055px"> (S.L.P.  (C) No. 26861-</span>
+<span class="text-span" style="font-size: 10.079999923706055px">26862/2024) </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Filed on </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">22.07.2004 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Decided on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">22.06.2018 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">LPA No. 431 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2018. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">18.12.2019 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">25.04.2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Steel Authority of India Ltd. v. Sada </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Nand Singh (S.L.P.  (C) Diary No. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">33516 of 2024)  </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Decided on </span>
+<span class="text-span" style="font-size: 10.079999923706055px">02.08.2017 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">LPA No. 733 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2018. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">20.01.2020 </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">Civil Review </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">No. 11 of </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">2021. </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 10.079999923706055px">25.04.2024 </span>
+</div>
+            <div class="text-block">
+<span class="text-span">  </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-4">
+            <div class="page-number">Page 4</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">4 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">4.</span><span class="text-span bold"> </span>
+<span class="text-span">The management of Steel Authority of India is the Appellant, and the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Respondents are retired employees of the Steel Authority of India/Bokaro </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Steel Plant. For convenience, the parties are referred to as SAIL and Ex-</span>
+</div>
+            <div class="text-block">
+<span class="text-span">Employee(s), respectively. The circumstances, dates, and events in the Civil </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Appeal filed against Shambu Prasad Singh/Ex-Employee against the Order in </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Civil Review Petition No. 45 of 2021 in LPA No. 561 of 2017, against Writ </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Petition No. 1681 of 2012, are referred to and would be sufficient for disposing </span>
+</div>
+            <div class="text-block">
+<span class="text-span">of the batch of Civil Appeals. </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">5.</span><span class="text-span bold"> </span>
+<span class="text-span">The Civil Appeals examine the workability of the right of SAIL to </span>
+</div>
+            <div class="text-block">
+<span class="text-span">withhold the gratuity of Ex-Employees because the Ex-Employees did not </span>
+</div>
+            <div class="text-block">
+<span class="text-span">surrender vacant possession of the quarter allotted to them while in service. </span>
+</div>
+            <div class="text-block">
+<span class="text-span">The consideration of circumstances and mutual legal obligations arises under </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the SAIL Gratuity Rules, 1978 and O&amp;M/Procedure/789 dated 26.03.2009. </span>
+</div>
+            <div class="text-block">
+<span class="text-span">The incidental consideration is the applicability of the Order dated 31.03.2017 </span>
+</div>
+            <div class="text-block">
+<span class="text-span">in Civil Appeal No. 4740 of 2017 or the Order dated 15.12.2020 in S.L.P.  (C) </span>
+</div>
+            <div class="text-block">
+<span class="text-span">No. 11025 of 2020.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">6.</span><span class="text-span bold"> </span>
+<span class="text-span">Shambu Prasad Singh/Ex-Employee, on 31.05.2006, retired from the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">service of Bokaro Steel Plant. He was allotted a staff quarter, and through </span>
+</div>
+            <div class="text-block">
+<span class="text-span">representations made between 11.09.2007 and 20.09.2010, the Ex-</span>
+</div>
+            <div class="text-block">
+<span class="text-span">Employee(s), </span>
+<span class="text-span">including </span>
+<span class="text-span">Shambu </span>
+<span class="text-span">Prasad </span>
+<span class="text-span">Singh, </span>
+<span class="text-span">requested </span>
+<span class="text-span">that </span>
+<span class="text-span">the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">management allows retention of the allotted quarter beyond the permissible </span>
+</div>
+            <div class="text-block">
+<span class="text-span">period under the Rules of retention. The management, instead of accepting </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the request to retain the allotted quarter post-retirement, issued notices </span>
+</div>
+            <div class="text-block">
+<span class="text-span">calling upon the Ex-Employees to vacate and hand over possession to the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">management. Subsequently, Shambu Prasad Singh filed W.P. (C) No. 1681 of </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-5">
+            <div class="page-number">Page 5</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">5 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">2012 challenging the notice of eviction, which was dismissed. The said Writ </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Petition was dismissed on 28.07.2016, following the Order dated 24.01.2014 </span>
+</div>
+            <div class="text-block">
+<span class="text-span">passed by the Division Bench of the High Court. In the batch of LPAs filed by </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the Ex-employees, the Division Bench of the High Court of Jharkhand, by </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Order dated 20.01.2020, disposed of the LPAs by relying on </span><span class="text-span italic">Ram Naresh Singh </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">v. Bokaro Steel Limited</span><span class="text-span">.</span><span class="text-span" style="font-size: 7.919999599456787px">1</span><span class="text-span"> On 15.12.2020, in S.L.P.  (C) No. 11025 of 2020, this </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Court took a different view and observed that regulating the discretion of </span>
+</div>
+            <div class="text-block">
+<span class="text-span">management to adjust the penal rent payable from the gratuity was </span>
+</div>
+            <div class="text-block">
+<span class="text-span">misplaced. The management, relying on the Order dated 15.12.2020, </span>
+</div>
+            <div class="text-block">
+<span class="text-span">preferred Civil Review before the Division Bench to review the Order dated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">20.01.2020. Through the impugned order, the Civil Review Petitions have </span>
+</div>
+            <div class="text-block">
+<span class="text-span">been dismissed. Hence, the management of SAIL/Bokaro Steel challenges the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Orders dated 16.05.2024 and 20.01.2020 in the present Civil Appeals.   </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">7.</span><span class="text-span bold"> </span>
+<span class="text-span">It is contextual to refer to Writ Petition No. 373 of 2012 filed by Ex-</span>
+</div>
+            <div class="text-block">
+<span class="text-span">Employee/Shri Ram Naresh Singh. The Writ Petition was disposed of with a </span>
+</div>
+            <div class="text-block">
+<span class="text-span">direction to pay the full gratuity with 6% interest. SAIL assailed the Order </span>
+</div>
+            <div class="text-block">
+<span class="text-span">dated 10.12.2012 in Writ Petition No. 373 of 2012 in LPA No. 15 of 2013, and </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the LPA was allowed. Ram Naresh Singh challenged the Order in LPA No. 15 </span>
+</div>
+            <div class="text-block">
+<span class="text-span">of 2013 by filing the Civil Appeal No. 4740 of 2017. </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">8.</span><span class="text-span bold"> </span>
+<span class="text-span">To shorten the narration, the Orders dated 31.03.2017 in Civil Appeal </span>
+</div>
+            <div class="text-block">
+<span class="text-span">No. 4740 of 2017 and 15.12.2020 in S.L.P.  (C) No. 11025 of 2020 are </span>
+</div>
+            <div class="text-block">
+<span class="text-span">excerpted below:  </span>
+</div>
+            <div class="text-block">
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 6.480000019073486px">1</span><span class="text-span" style="font-size: 10.079999923706055px"> Civil Appeal No. 4740 of 2017. </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-6">
+            <div class="page-number">Page 6</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">6 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.079999923706055px">Civil Appeal No. 4740 of 2017 </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">“3. We are of the view that in the facts of the case the </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">High Court was not justified in sustaining the action of </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the respondent - Bokaro Steel Limited in retaining the </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">amount of Rs.2,06,000/- due to the appellant on account </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">of gratuity. The respondents shall release the said </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">amount to the appellant forthwith along with interest at </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the rate of 6% per annum  from the date of retention of </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the amount  till the date of actual payment. However, it </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">will be open for the respondents to  charge normal rent </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">(i.e. Rs.88/- per month) of the quarter/premises in </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">question for the period for which the appellant was in  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">occupation after his superannuation.”  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px">15.12.2020 in SLP (C) 11025 of 2020  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">“We, however, set aside the observations made in paras </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">19 and  21 qua the principles of penal rent being charged </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">as we are of the view the it if an employee occupies a </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">quarter beyond the specified period, the penal rent would </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">be the natural consequence and such penal rent can be </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">adjusted against the dues payable including  gratuity. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">This is so in view of the judgment in Secretary, ONGC </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Ltd. v. V. U. Warrier - (2005) 5 SCC 245 and the reliance </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">placed in the impugned judgment on the case of Ram </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Naresh Singh v. Bokaro Steel Plant [Civil Appeal </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">No.4740/2007] dated 31.03.2017 is misplaced as is not </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">even a judgment but an order in the given facts of the </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">case.” </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">9.</span><span class="text-span bold"> </span>
+<span class="text-span">We have heard Learned Senior Counsel and Counsel for the parties and </span>
+</div>
+            <div class="text-block">
+<span class="text-span">perused the record. </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">10.</span><span class="text-span bold"> </span>
+<span class="text-span">The following questions arise for determination in the present batch of </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Civil Appeals:  </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">(i)</span><span class="text-span italic"> </span>
+<span class="text-span italic">Whether the reliance placed by the Division Bench of the High </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">Court on the Order dated 31.03.2017 in Ram Naresh Singh v. </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">Bokaro Steel Ltd., Civil Appeal No. 4740 of 2017, as a binding </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">precedent, is sustainable in law?  </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">(ii)</span><span class="text-span italic"> </span>
+<span class="text-span italic">Whether the management of SAIL is entitled to adjust the penal </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">rent from the gratuity/security amount of Ex-Employees who have </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">retained staff quarters beyond the permissible period?</span><span class="text-span"> </span><span class="text-span italic"> </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-7">
+            <div class="page-number">Page 7</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">7 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">11.</span><span class="text-span bold"> </span>
+<span class="text-span">Rule 3 of SAIL Gratuity Rules, 1978 deals with the payment of Gratuity </span>
+</div>
+            <div class="text-block">
+<span class="text-span">by the management, and Rule 3.2.1 deals with the amount of gratuity payable </span>
+</div>
+            <div class="text-block">
+<span class="text-span">to an Ex-Employee. For our purpose, Rule 3.2.1 clause (c) is relevant and </span>
+</div>
+            <div class="text-block">
+<span class="text-span">excerpted hereunder:  </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">“(c) The company will have the right to withhold the gratuity </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">amount payable to an ex-employee or his nominee/legal </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">heir(s), in case of his death, for non-compliance of Company&#x27;s </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">rules including non-vacation of Company&#x27;s  accommodation. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">No interest shall be payable on the gratuity amount so  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">withheld for the period of unauthorised occupation of </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Company&#x27;s  accommodation and up to one month after the </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">vacation of the Company’s accommodation.”    </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">12.</span><span class="text-span bold"> </span>
+<span class="text-span">On the policy of retention of staff quarters, the counsel relied on </span>
+</div>
+            <div class="text-block">
+<span class="text-span">O&amp;M/Procedure/789 and for immediate reference the following clauses are </span>
+</div>
+            <div class="text-block">
+<span class="text-span">excerpted:  </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">“I. Failure to vacate the house after permitted period   </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">1.</span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px"> </span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px">The ex -employee shall vacate the house on the last day of </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">retention period or earlier. In case of failure by the employee </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">to vacate the quarters, the security Deposit by him will be  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">forfeited in addition to eviction action. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">2.</span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px"> </span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px">The surety will be liable to pay the penalty and other </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">outstanding dues if the allottee fail to clear the outstanding </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">dues.   </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">3.</span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px"> </span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px">In case of any dispute on any of the clauses of this circular </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the decision of the HOD. TSD will be binding on all parties. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">4.</span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px"> </span><span class="text-span" style="font-size: 10.079999923706055px">⁠</span><span class="text-span italic" style="font-size: 10.079999923706055px">Management reserves the right to withdraw this scheme </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">fully or partially without assigning any reason at any point </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">of time BSP also reserves the right to cancel any retention </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">granted to any employee, if the quarters are required for </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">further allotment.” </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">13.</span><span class="text-span bold"> </span>
+<span class="text-span">Further, the Office Order dated 16.06.2009 stipulates the admissible </span>
+</div>
+            <div class="text-block">
+<span class="text-span">period of quarter retention, admissible rent, the rent payable during the grace </span>
+</div>
+            <div class="text-block">
+<span class="text-span">and retention period: </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-8">
+            <div class="page-number">Page 8</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">8 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">“Ref. No. 1402/2009  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">    June 16, 2009 </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">                                      OFFICE ORDER </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">                                       NO.2183/A.O. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Sub: Modification in Quarter Retention policy. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">REF: Office Order No. 2036.A.O. dated 20.03.2008. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Office order No. 1774/A.O. dated 19.10.2006. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">1.</span><span class="text-span italic" style="font-size: 10.079999923706055px"> </span><span class="text-span italic" style="font-size: 10.079999923706055px">The following modification have been made in the existing  </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">quarter Retention policy for employees Separated from the </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">rolls of the company:- </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.079999923706055px"> A. Period if Retention </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Type of quarter </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Admissible </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">period </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">of </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">quarter </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Retention </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">All Types </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">2, (two) months grace period plus 10 </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">month Retention i.e. a total of 12 </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">month </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">from </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">date </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">of </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">superannuation.  </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px">B. Charges </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">     Type </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">of </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">quarter </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic" style="font-size: 10.079999923706055px">Admissible </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Rent </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">A Type </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">2 times normal rent during the grace </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">period  Rs. 5000/-per month during </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the retention  period (i.e. for 10 month </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">after </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">grace </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">period) </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">thereafter </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Applicable penal rent. </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">B Type </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">2 times normal rent during the grace </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">period  Rs. 5000/-per month during </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the retention  period (i.e. for 10 month </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">after </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">grace </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">period) </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Thereafter </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Rs.8000/- per month </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">   C Type </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">2 times normal rent during the grace </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">period Rs. 3000/-per month during </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">the retention  period (i.e. for 10 month </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">after </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">grace-period) </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">thereafter </span>
+<span class="text-span italic" style="font-size: 10.079999923706055px">Rs.4500/- per month </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold" style="font-size: 10.079999923706055px">XxX</span><span class="text-span italic" style="font-size: 10.079999923706055px">” </span>
+<span class="text-span bold" style="font-size: 10.079999923706055px"> </span>
+<span class="text-span bold">14.</span><span class="text-span bold"> </span>
+<span class="text-span"> The management argues that it is obligated to pay gratuity to an </span>
+</div>
+            <div class="text-block">
+<span class="text-span">employee who has retired from service. There is no dispute regarding the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">gratuity amount payable to an employee, as it is determined in accordance </span>
+</div>
+            <div class="text-block">
+<span class="text-span">with the SAIL Gratuity Rules, 1978. However, the Ex-Employees covered by </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the present batch have not vacated the allotted staff quarters. Therefore, any </span>
+</div>
+            <div class="text-block">
+<span class="text-span">direction to release either the gratuity or the gratuity with interest is contrary </span>
+</div>
+            <div class="text-block">
+<span class="text-span">to the SAIL Gratuity Rules, 1978, as well as the admissible period of staff </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-9">
+            <div class="page-number">Page 9</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">9 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">quarter retention and the terms and conditions thereof governing the default </span>
+</div>
+            <div class="text-block">
+<span class="text-span">circumstances. Retention of a staff quarter allotted to an employee beyond the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">permissible period warrants determination of rent strictly as per the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">management policy. Without discharging the obligation of vacating the staff </span>
+</div>
+            <div class="text-block">
+<span class="text-span">quarters, directing the management to refund gratuity with a rate of interest </span>
+</div>
+            <div class="text-block">
+<span class="text-span">and adjust only nominal or normal rent is </span><span class="text-span italic">ex facie</span><span class="text-span"> illegal and contrary to the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Order of this Court dated 15.12.2020 in S.L.P. (C) No. 11025 of 2020. It is </span>
+</div>
+            <div class="text-block">
+<span class="text-span">argued that the obligation to vacate or pay the gratuity amount cannot be </span>
+</div>
+            <div class="text-block">
+<span class="text-span">treated independently. In substance, the receipt of gratuity is dependent on </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the employee’s performance of his obligation. It is argued that the employee </span>
+</div>
+            <div class="text-block">
+<span class="text-span">cannot be heard to pray for the release of gratuity without conforming to the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">management’s policy on retention of staff quarters. The issue is no longer </span><span class="text-span italic">res </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">integra</span><span class="text-span">, both in view of the decision reported in </span><span class="text-span italic">ONGC Ltd. v. V.U. Warrier</span><span class="text-span">,</span><span class="text-span" style="font-size: 7.919999599456787px">2</span><span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">and the Order dated 15.12.2020 in S.L.P(C) No. 11025 of 2020. </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">15.</span><span class="text-span bold"> </span>
+<span class="text-span">It is urged for the employees that the reviews filed by the management </span>
+</div>
+            <div class="text-block">
+<span class="text-span">have been dismissed on a correct appreciation of the law. The Order dated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">20.01.2020 was passed with reference to the binding precedent in </span><span class="text-span italic">Ram </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">Naresh Singh’s </span><span class="text-span">case dated 31.03.2017. The retention policy of staff quarters </span>
+</div>
+            <div class="text-block">
+<span class="text-span">introduced post-retirement by the management does not apply to employees </span>
+</div>
+            <div class="text-block">
+<span class="text-span">who have retired. Thousands of staff quarters remain unoccupied. Therefore, </span>
+</div>
+            <div class="text-block">
+<span class="text-span">considering the employees that have retired are from skilled/semi-skilled </span>
+</div>
+            <div class="text-block">
+<span class="text-span">posts, allowing management to recover penal rent as per the policy may </span>
+</div>
+            <div class="text-block">
+<span class="text-span">ultimately result in the recovery of a larger amount from the employees, which </span>
+</div>
+            <div class="text-block">
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 6.480000019073486px">2</span><span class="text-span" style="font-size: 10.079999923706055px"> (2005) 5 SCC 245.  </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-10">
+            <div class="page-number">Page 10</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">10 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">would cause excessive hardship. Thus, even if any amount is to be adjusted </span>
+</div>
+            <div class="text-block">
+<span class="text-span">under the SAIL Gratuity Rules, 1978, it may be treated as normal rent rather </span>
+</div>
+            <div class="text-block">
+<span class="text-span">than penal rent. Since gratuity has not been paid, the management is </span>
+</div>
+            <div class="text-block">
+<span class="text-span">obligated to pay it with interest. Alternatively, it is urged that instead of </span>
+</div>
+            <div class="text-block">
+<span class="text-span">leaving discretion to management, this Court stipulates a reasonable sum </span>
+</div>
+            <div class="text-block">
+<span class="text-span">towards penal rent, and that, after adjusting the penal rent, the balance of </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the gratuity amount payable to the Ex-Employees is determined.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">16.</span><span class="text-span bold"> </span>
+<span class="text-span">At the outset, we have to examine whether the Order dated 20.01.2020 </span>
+</div>
+            <div class="text-block">
+<span class="text-span">warrants interference, in light of the decision in S.L.P. (C) No. 11025 of 2020. </span>
+</div>
+            <div class="text-block">
+<span class="text-span">We have perused the Order dated 31.03.2017 and the Order dated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">15.12.2020, and are </span><span class="text-span italic">prima facie </span><span class="text-span">of the view that the Order in </span><span class="text-span italic">Ram Naresh </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">Singh (supra) </span><span class="text-span">dated 31.03.2017</span><span class="text-span italic"> </span><span class="text-span">can at best be treated as a concession given </span>
+</div>
+            <div class="text-block">
+<span class="text-span">to an employee. The said Order dated 31.03.2017 also does not refer to a few </span>
+</div>
+            <div class="text-block">
+<span class="text-span">precedents on the point. The specificity of the concession has been noted and </span>
+</div>
+            <div class="text-block">
+<span class="text-span">explained by a Three-Judge Bench of this Court </span><span class="text-span italic">vide</span><span class="text-span"> Order dated 15.12.2020. </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Without much deliberation or discussion, we are of the view that the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">obligation to pay gratuity and the penal consequences with which an </span>
+</div>
+            <div class="text-block">
+<span class="text-span">employee can continue to retain the staff quarter allotted to him are squarely </span>
+</div>
+            <div class="text-block">
+<span class="text-span">covered by the Order dated 15.12.2020. </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">17.</span><span class="text-span bold"> </span>
+<span class="text-span">The fundamental distinction between the Order dated 31.03.2017 in </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">Ram Naresh Singh (supra)</span><span class="text-span"> and the Order dated 15.12.2020 in S.L.P. (C) No. </span>
+</div>
+            <div class="text-block">
+<span class="text-span">11025 of 2020 is noted. The former was passed on grounds of equity in the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">specific facts of that case, where the gratuity was offered as security, and did </span>
+</div>
+            <div class="text-block">
+<span class="text-span">not purport to lay down a binding precedent. The latter order, passed by a </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Three-Judge Bench, expressly set aside the observations made in paragraph </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-11">
+            <div class="page-number">Page 11</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">11 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">nos. 19 and 21 of the impugned judgment in S.L.P. (C) No. 11025 of 2020, </span>
+</div>
+            <div class="text-block">
+<span class="text-span">holding that if an employee occupies a quarter beyond the specified period, </span>
+</div>
+            <div class="text-block">
+<span class="text-span">penal rent would be the natural consequence. Such penal rent can be </span>
+</div>
+            <div class="text-block">
+<span class="text-span">adjusted against dues payable, including gratuity. In view of the binding </span>
+</div>
+            <div class="text-block">
+<span class="text-span">judgment in </span><span class="text-span italic">Secretary, ONGC Ltd. (supra)</span><span class="text-span">, a case is an authority only for what </span>
+</div>
+            <div class="text-block">
+<span class="text-span">it decides and an order passed on facts cannot be elevated to the status of a </span>
+</div>
+            <div class="text-block">
+<span class="text-span">precedent by operation of Article 141 of the Constitution of India.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">18.</span><span class="text-span bold"> </span>
+<span class="text-span">Therefore, the reliance placed by the Division Bench on </span><span class="text-span italic">Ram Naresh </span>
+</div>
+            <div class="text-block">
+<span class="text-span italic">Singh’s</span><span class="text-span"> case warrants interference and accordingly the impugned judgment </span>
+</div>
+            <div class="text-block">
+<span class="text-span">dated 20.01.2020 is liable to be set aside.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">19.</span><span class="text-span bold"> </span>
+<span class="text-span">We also note that the SAIL Gratuity Rules, 1978, read with the policy </span>
+</div>
+            <div class="text-block">
+<span class="text-span">under O&amp;M/Procedure/789 dated 26.03.2009, govern the post-retirement </span>
+</div>
+            <div class="text-block">
+<span class="text-span">obligations of Ex-Employees with respect to the vacation of management-</span>
+</div>
+            <div class="text-block">
+<span class="text-span">allotted accommodation and the consequent release of gratuity. Under Rule </span>
+</div>
+            <div class="text-block">
+<span class="text-span">3.2.1(c) of the SAIL Gratuity Rules, 1978, the management is expressly </span>
+</div>
+            <div class="text-block">
+<span class="text-span">empowered to withhold the gratuity amount payable to an Ex-Employee, or </span>
+</div>
+            <div class="text-block">
+<span class="text-span">his nominee/legal heirs in the event of death, for non-compliance of the SAIL’s </span>
+</div>
+            <div class="text-block">
+<span class="text-span">rules, including non-vacation of the management’s accommodation. Further, </span>
+</div>
+            <div class="text-block">
+<span class="text-span">no interest shall be payable on the gratuity amount so withheld during the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">period of unauthorised occupation. The amount ultimately payable to the Ex-</span>
+</div>
+            <div class="text-block">
+<span class="text-span">Employee upon vacation of the allotted staff quarter shall be computed after </span>
+</div>
+            <div class="text-block">
+<span class="text-span">adjusting the penal rent accrued for retention beyond the grace period </span>
+</div>
+            <div class="text-block">
+<span class="text-span">permissible under SAIL’s policy, in the manner and at the rate as determined </span>
+</div>
+            <div class="text-block">
+<span class="text-span">in accordance with the said Rules and applicable circulars. The reasoning </span>
+</div>
+            <div class="text-block">
+<span class="text-span">pertaining to reciprocal obligations need not detain us in a long narration. </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-12">
+            <div class="page-number">Page 12</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">12 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">The obligations are mutual and reciprocal. The Ex-Employee is obligated to </span>
+</div>
+            <div class="text-block">
+<span class="text-span">vacate and surrender possession of the staff quarters, and the management </span>
+</div>
+            <div class="text-block">
+<span class="text-span">is obligated to release the gratuity amount after making permissible </span>
+</div>
+            <div class="text-block">
+<span class="text-span">deductions. Neither obligation can be enforced in isolation nor independently </span>
+</div>
+            <div class="text-block">
+<span class="text-span">of the other. The simultaneous discharge of these reciprocal obligations, i.e., </span>
+</div>
+            <div class="text-block">
+<span class="text-span">handing over of vacant possession by the Ex-Employee and payment of the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">balance gratuity amount by the management, is essential under SAIL Gratuity </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Rules, 1978 and policy O&amp;M/Procedure/789 dated 26.03.2009.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">20.</span><span class="text-span bold"> </span>
+<span class="text-span">On the question of interest, Rule 3.2.1(c) of the SAIL Gratuity Rules, </span>
+</div>
+            <div class="text-block">
+<span class="text-span">1978, stipulates that no interest shall be payable on the gratuity amount </span>
+</div>
+            <div class="text-block">
+<span class="text-span">withheld for the period of unauthorised occupation of the staff quarters and </span>
+</div>
+            <div class="text-block">
+<span class="text-span">up to one month after vacation thereof. The withholding of the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">gratuity/security amount was not only authorised under the management’s </span>
+</div>
+            <div class="text-block">
+<span class="text-span">rules but also voluntarily consented to by each Ex-Employee in a written </span>
+</div>
+            <div class="text-block">
+<span class="text-span">undertaking. An employee cannot be permitted to approbate and reprobate. </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Having availed of the benefit of retaining the staff quarters by offering the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">gratuity amount as security, the employee cannot simultaneously claim that </span>
+</div>
+            <div class="text-block">
+<span class="text-span">withholding the said amount entitles the Ex-Employees to interest on the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">withheld gratuity/security amount. To award interest in such circumstances </span>
+</div>
+            <div class="text-block">
+<span class="text-span">would effectively reward unauthorised occupation of public premises.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">21.</span><span class="text-span bold"> </span>
+<span class="text-span">The above consideration leads us to the Ex-Employees’ alternative </span>
+</div>
+            <div class="text-block">
+<span class="text-span">argument for fixing a reasonable penal rent rather than determining the rent </span>
+</div>
+            <div class="text-block">
+<span class="text-span">payable in accordance with the management’s policy. We have heard the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">counsel appearing for the management and also the Ex-Employees. We are of </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the view that a reasonable sum of Rs. 1,000 per month may be fixed as penal </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-13">
+            <div class="page-number">Page 13</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">13 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">rent to be adjusted for the retention period beyond the grace period </span>
+</div>
+            <div class="text-block">
+<span class="text-span">permissible under SAIL’s policy. In arriving at the sum of Rs. 1,000 per month </span>
+</div>
+            <div class="text-block">
+<span class="text-span">as a reasonable penal rent, this Court has taken into account the following </span>
+</div>
+            <div class="text-block">
+<span class="text-span">considerations: (i) the Ex-Employees are retired workers, most of whom held </span>
+</div>
+            <div class="text-block">
+<span class="text-span">skilled or semi-skilled posts, and the full enforcement of the management’s </span>
+</div>
+            <div class="text-block">
+<span class="text-span">penal rent policy may, in several cases, entirely extinguish the gratuity </span>
+</div>
+            <div class="text-block">
+<span class="text-span">amount payable to them; (ii) the policy under O&amp;M/Procedure/789 dated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">26.03.2009 was framed and brought into existence post-retirement of several </span>
+</div>
+            <div class="text-block">
+<span class="text-span">of the Ex-Employees in the present batch; (iii) the sum of Rs. 1,000 per month </span>
+</div>
+            <div class="text-block">
+<span class="text-span">is intended to balance the legitimate interest of the management in recovering </span>
+</div>
+            <div class="text-block">
+<span class="text-span">occupation charges for unauthorized retention, with the equally legitimate </span>
+</div>
+            <div class="text-block">
+<span class="text-span">interest of the Ex-Employees in retaining a portion of the gratuity; and (iv) </span>
+</div>
+            <div class="text-block">
+<span class="text-span">this is an equitable exercise of jurisdiction, and the amount fixed is </span>
+</div>
+            <div class="text-block">
+<span class="text-span">reasonable and just between the normal rent and the full contractual penal </span>
+</div>
+            <div class="text-block">
+<span class="text-span">rent. This fixation is, however, confined strictly to the present batch and shall </span>
+</div>
+            <div class="text-block">
+<span class="text-span">not be treated as a precedent. The amount is calculated and communicated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">to the employees within four weeks from today. The Ex-Employees/Legal </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Heirs of the Ex-Employees are granted an additional 4 weeks’ time to vacate </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the staff quarters in their respective possession. The reciprocal obligations are </span>
+</div>
+            <div class="text-block">
+<span class="text-span">discharged simultaneously, i.e., (i) the payment of gratuity by the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">management and (ii) the handing over of vacant possession to the </span>
+</div>
+            <div class="text-block">
+<span class="text-span">management by the Ex-Employees or their legal heirs.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">22.</span><span class="text-span bold"> </span>
+<span class="text-span">The direction in the impugned judgment, to pay interest on gratuity, </span>
+</div>
+            <div class="text-block">
+<span class="text-span">having regard to the SAIL Gratuity Rules, 1978, is unsustainable and an </span>
+</div>
+            <div class="text-block">
+<span class="text-span">equitable order in the circumstances of the case is passed while disposing of </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-14">
+            <div class="page-number">Page 14</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+<span class="text-span bold"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">14 </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">the subject Civil Appeals. We reiterate that the Judgment in the instant </span>
+</div>
+            <div class="text-block">
+<span class="text-span">appeals shall not be treated as a precedent in any other matter governing SAIL </span>
+</div>
+            <div class="text-block">
+<span class="text-span">Gratuity Rules, 1978 and retention policy O&amp;M/Procedure/789 dated </span>
+</div>
+            <div class="text-block">
+<span class="text-span">26.03.2009.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold">23.</span><span class="text-span bold"> </span>
+<span class="text-span">The Civil Appeals are allowed in the above terms. Pending </span>
+</div>
+            <div class="text-block">
+<span class="text-span">application(s), if any, is/are disposed of accordingly. No order as to costs.  </span>
+</div>
+            <div class="text-block">
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">  </span>
+</div>
+            <div class="text-block">
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">..……….…………………J. </span>
+<span class="text-span bold">                                                                            [PANKAJ MITHAL] </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="font-size: 1.9199999570846558px"> </span>
+<span class="text-span"> </span>
+<span class="text-span"> </span>
+<span class="text-span"> </span>
+<span class="text-span"> </span>
+<span class="text-span"> </span>
+<span class="text-span"> </span>
+<span class="text-span"> </span>
+<span class="text-span"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span">..…………………………J. </span>
+<span class="text-span bold">                                                                             [S.V.N. BHATTI] </span>
+</div>
+            <div class="text-block">
+<span class="text-span bold"> </span>
+<span class="text-span bold">New Delhi; </span>
+<span class="text-span bold">March 18, 2026.</span><span class="text-span"> </span>
+<span class="text-span"> </span>
+</div>
+        </div>
+        <div class="pdf-page" id="page-15">
+            <div class="page-number">Page 15</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">NON-REPORTABLE</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">   IN THE SUPREME COURT OF INDIA</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">     INHERENT JURISDICTION</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">CONTEMPT PETITION (CIVIL) NO(s).              OF 2026</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">(@ D. No. 72828 of 2025)</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">IN</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">           CIVIL APPEAL NOS. </span>
+<span class="text-span" style="color: #00000a"> </span>
+<span class="text-span" style="color: #00000a"> 3499 - 3500</span>
+<span class="text-span" style="color: #00000a"> </span>
+<span class="text-span" style="color: #00000a">  of 2026</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">(@ SPECIAL LEAVE PETITION (CIVIL) NOS. 25516 – 25517/2024)</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">SHAMBHU PRASAD SINGH </span>
+<span class="text-span" style="color: #00000a">                              … PETITIONER(S)</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a"> </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">VERSUS</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a"> </span>
+<span class="text-span" style="color: #00000a">PRIYA RANJAN AND OTHERS</span>
+<span class="text-span" style="color: #00000a">    … ALLEGED CONTEMNOR(S)</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">J U D G M E N T </span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">S.V.N. BHATTI, J.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">1.</span>
+<span class="text-span" style="color: #00000a">Having regard to the view taken in the accompanying Civil Appeal Nos.</span>
+</div>
+            <div class="text-block">
+<span class="text-span">3499 - 3500</span><span class="text-span" style="color: #00000a"> of 2026, arising out of SLP (Civil) Nos. 25516–25517 of 2024,</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">the disobedience complained in the present Contempt Cases do not warrant</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">our consideration. Hence, the Contempt Cases stand dismissed.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">2.</span>
+<span class="text-span" style="color: #00000a">Pending application(s), if any, is/are disposed of accordingly.</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">..……….…………………J.</span>
+<span class="text-span" style="color: #00000a">                                                                            [PANKAJ MITHAL]</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">..…………………………J.</span>
+<span class="text-span" style="color: #00000a">                                                                             [S.V.N. BHATTI]</span>
+</div>
+            <div class="text-block">
+<span class="text-span" style="color: #00000a">New Delhi;</span>
+<span class="text-span" style="color: #00000a">March 18, 2026</span>
+</div>
+        </div>
+    </div>
+</body>
+</html>
