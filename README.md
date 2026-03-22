@@ -59,7 +59,7 @@ Basic install flow:
 
 ### Option 2: Run on macOS with Docker (recommended for Mac users)
 
-`pdf2htmlEX` does **not** currently provide a supported native macOS build script in this repository. For most Mac users, the easiest way to run it is through Docker, which uses the project's container image.
+`pdf2htmlEX` does **not** currently provide a supported native macOS build script in this repository. For most Mac users, the easiest way to run it is through Docker. The project's published releases include a Docker/OCI image tarball, but the Docker Hub repository does not currently provide a `latest` tag.
 
 #### macOS step-by-step for beginners
 
@@ -72,19 +72,21 @@ Basic install flow:
    cd ~/Downloads
    ```
 
-5. Pull the latest published `pdf2htmlEX` container image:
+5. Open the latest release page: <https://github.com/pdf2htmlEX/pdf2htmlEX/releases>.
+6. Download the release asset whose name ends in `.tar.gz` and starts with `pdf2htmlEX-`, for example `pdf2htmlEX-0.18.8.rc1-master-20200630-alpine-3.12.0-x86_64.tar.gz`.
+7. Load that image into Docker (replace the filename with the file you downloaded):
 
    ```bash
-   docker pull pdf2htmlex/pdf2htmlex:latest
+   docker load -i pdf2htmlEX-0.18.8.rc1-master-20200630-alpine-3.12.0-x86_64.tar.gz
    ```
 
-6. Run the converter by mounting your current folder into the container:
+8. Run the converter by mounting your current folder into the container:
 
    ```bash
-   docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX your-file.pdf
+   docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:0.18.8.rc1-master-20200630-alpine-3.12.0-x86_64 pdf2htmlEX your-file.pdf
    ```
 
-7. Look in the same folder for the generated HTML file, usually `your-file.html`.
+9. Look in the same folder for the generated HTML file, usually `your-file.html`.
 
 #### Example on macOS
 
@@ -92,7 +94,7 @@ If your file is named `report.pdf` and is in `~/Downloads`:
 
 ```bash
 cd ~/Downloads
-docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX report.pdf
+docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:0.18.8.rc1-master-20200630-alpine-3.12.0-x86_64 pdf2htmlEX report.pdf
 ```
 
 That should create `report.html` in `~/Downloads`.
@@ -101,14 +103,14 @@ That should create `report.html` in `~/Downloads`.
 
 ```bash
 mkdir -p output
-docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX --dest-dir output report.pdf
+docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:0.18.8.rc1-master-20200630-alpine-3.12.0-x86_64 pdf2htmlEX --dest-dir output report.pdf
 ```
 
 #### Common problems on macOS
 
 - **`docker: command not found`**: Docker Desktop is not installed, or you need to quit and reopen Terminal after installing it.
 - **Docker says it is not running**: Start Docker Desktop and wait for it to finish launching.
-- **`Unable to find image`**: Run `docker pull pdf2htmlex/pdf2htmlex:latest` first, then try again.
+- **`Unable to find image`**: The Docker Hub `latest` tag is not currently published. Download the release `.tar.gz` image, run `docker load -i ...`, then use the exact tag that Docker prints after loading.
 - **Your PDF has spaces in its filename**: Wrap the name in quotes, for example `"My File.pdf"`.
 - **You used `cd pdf2htmlEX` but your PDF is somewhere else**: `pdf2htmlEX` reads files from the folder you mount into Docker. Either `cd` into the PDF's folder first, or mount a different folder.
 
@@ -118,8 +120,8 @@ Replace `sample.pdf` with your own file name:
 
 ```bash
 cd ~/Downloads
-docker pull pdf2htmlex/pdf2htmlex:latest
-docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX sample.pdf
+docker load -i pdf2htmlEX-0.18.8.rc1-master-20200630-alpine-3.12.0-x86_64.tar.gz
+docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:0.18.8.rc1-master-20200630-alpine-3.12.0-x86_64 pdf2htmlEX sample.pdf
 ```
 
 ### Option 3: Build locally with the provided scripts
