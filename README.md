@@ -57,9 +57,74 @@ Basic install flow:
 3. Install or run that artifact using the standard tool for your platform.
 4. Verify the installation with `pdf2htmlEX --version`.
 
-### Option 2: Build locally with the provided scripts
+### Option 2: Run on macOS with Docker (recommended for Mac users)
 
-For most source installs, use the helper scripts in `buildScripts/`.
+`pdf2htmlEX` does **not** currently provide a supported native macOS build script in this repository. For most Mac users, the easiest way to run it is through Docker, which uses the project's container image.
+
+#### macOS step-by-step for beginners
+
+1. Install [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/).
+2. Open Docker Desktop once and wait until it says Docker is running.
+3. Open the **Terminal** app on your Mac.
+4. Go to the folder where your PDF lives. Example:
+
+   ```bash
+   cd ~/Downloads
+   ```
+
+5. Pull the latest published `pdf2htmlEX` container image:
+
+   ```bash
+   docker pull pdf2htmlex/pdf2htmlex:latest
+   ```
+
+6. Run the converter by mounting your current folder into the container:
+
+   ```bash
+   docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX your-file.pdf
+   ```
+
+7. Look in the same folder for the generated HTML file, usually `your-file.html`.
+
+#### Example on macOS
+
+If your file is named `report.pdf` and is in `~/Downloads`:
+
+```bash
+cd ~/Downloads
+docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX report.pdf
+```
+
+That should create `report.html` in `~/Downloads`.
+
+#### If you want the output in a separate folder
+
+```bash
+mkdir -p output
+docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX --dest-dir output report.pdf
+```
+
+#### Common problems on macOS
+
+- **`docker: command not found`**: Docker Desktop is not installed, or you need to quit and reopen Terminal after installing it.
+- **Docker says it is not running**: Start Docker Desktop and wait for it to finish launching.
+- **`Unable to find image`**: Run `docker pull pdf2htmlex/pdf2htmlex:latest` first, then try again.
+- **Your PDF has spaces in its filename**: Wrap the name in quotes, for example `"My File.pdf"`.
+- **You used `cd pdf2htmlEX` but your PDF is somewhere else**: `pdf2htmlEX` reads files from the folder you mount into Docker. Either `cd` into the PDF's folder first, or mount a different folder.
+
+#### Quick copy-paste guide for Mac users
+
+Replace `sample.pdf` with your own file name:
+
+```bash
+cd ~/Downloads
+docker pull pdf2htmlex/pdf2htmlex:latest
+docker run --rm -it -v "$PWD:/pdf" pdf2htmlex/pdf2htmlex:latest pdf2htmlEX sample.pdf
+```
+
+### Option 3: Build locally with the provided scripts
+
+For most source installs on supported Linux systems, use the helper scripts in `buildScripts/`.
 
 #### Debian/Ubuntu and other `apt`-based systems
 
