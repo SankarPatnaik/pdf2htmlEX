@@ -75,36 +75,138 @@ def get_max_fileid(client) -> int:
 # ─────────────────────────────────────────
 # PDF Text Extraction
 # ─────────────────────────────────────────
+def normalize_repeated_line(text: str) -> str:
+    """Normalize line text so repeated header/footer detection is stable."""
+    text = re.sub(r'\s+', ' ', text).strip()
+    text = re.sub(r'\b\d+\b', '#', text)
+    return text.lower()
+
+
+PAGE_MARKER_RE = re.compile(r'^Page\s+\d+\s+of\s+\d+$', re.IGNORECASE)
+TRAILING_PAGE_MARKER_RE = re.compile(
+    r'^(?:'
+    r'(?:MAC\.APP|W\.P\.?|ARB\.P\.?|CS?\(?\w*\)?|CRL\.?|RFA?|FAO?|LPA?|OMP?|CW?|BAIL?)'
+    r'[\w\s\-\.\/]*\s{2,}\d+'
+    r')$',
+    re.IGNORECASE,
+)
+
+
+def extract_line_entries(doc: fitz.Document) -> list:
+    """Extract line-level text with geometry for later filtering and layout heuristics."""
+    entries = []
+    for page_num, page in enumerate(doc):
+        page_dict = page.get_text("dict")
+        page_width = page.rect.width
+        page_height = page.rect.height
+        for block_id, block in enumerate(page_dict.get("blocks", [])):
+            if block.get("type") != 0:
+                continue
+            for line_id, line in enumerate(block.get("lines", [])):
+                spans = []
+                parts = []
+                max_size = 0
+                is_bold = False
+                is_italic = False
+                min_x = float("inf")
+                for span_id, span in enumerate(line.get("spans", [])):
+                    span_text = span.get("text", "").strip()
+                    if not span_text:
+                        continue
+                    parts.append(span_text)
+                    size = span.get("size", 11)
+                    max_size = max(max_size, size)
+                    flags = span.get("flags", 0)
+                    if flags & 16:
+                        is_bold = True
+                    if flags & 2:
+                        is_italic = True
+                    origin_x = span.get("origin", (0, 0))[0]
+                    min_x = min(min_x, origin_x)
+                    spans.append({
+                        "span_id": span_id,
+                        "text": span_text,
+                        "bbox": tuple(span.get("bbox", (0, 0, 0, 0))),
+                        "origin": tuple(span.get("origin", (0, 0))),
+                        "size": size,
+                        "flags": flags,
+                        "font": span.get("font", ""),
+                    })
+
+                line_text = " ".join(parts).strip()
+                if not line_text:
+                    continue
+
+                x0, y0, x1, y1 = line.get("bbox", (0, 0, 0, 0))
+                entries.append({
+                    "text": line_text,
+                    "bbox": (x0, y0, x1, y1),
+                    "page": page_num + 1,
+                    "page_width": page_width,
+                    "page_height": page_height,
+                    "block_id": block_id,
+                    "line_id": line_id,
+                    "spans": spans,
+                    "size": max_size,
+                    "bold": is_bold,
+                    "italic": is_italic,
+                    "indent": round(min_x if min_x != float("inf") else x0),
+                })
+    return entries
+
+
+def detect_repeated_margin_lines(entries: list, total_pages: int) -> set:
+    """Detect repeated header/footer lines instead of dropping by geometry alone."""
+    if total_pages < 2:
+        return set()
+
+    grouped = {}
+    for entry in entries:
+        text = entry["text"].strip()
+        if not text or PAGE_MARKER_RE.match(text) or TRAILING_PAGE_MARKER_RE.match(text):
+            continue
+
+        x0, y0, x1, y1 = entry["bbox"]
+        page_height = entry["page_height"]
+        in_margin = y1 <= page_height * 0.08 or y0 >= page_height * 0.92
+        if not in_margin:
+            continue
+
+        normalized = normalize_repeated_line(text)
+        grouped.setdefault(normalized, {"pages": set(), "entries": []})
+        grouped[normalized]["pages"].add(entry["page"])
+        grouped[normalized]["entries"].append(entry)
+
+    repeated = set()
+    for data in grouped.values():
+        if len(data["pages"]) >= 2:
+            for entry in data["entries"]:
+                repeated.add((entry["page"], entry["block_id"], entry["line_id"]))
+
+    return repeated
+
+
 def extract_text_from_pdf(pdf_bytes: bytes):
     doc = fitz.open(stream=pdf_bytes, filetype="pdf")
     total_pages = len(doc)
+    entries = extract_line_entries(doc)
+    repeated_margin_lines = detect_repeated_margin_lines(entries, total_pages)
     lines = []
 
-    for page_num, page in enumerate(doc):
-        page_height = page.rect.height
-        header_cutoff = page_height * 0.08
-        footer_cutoff = page_height * 0.92
-
-        blocks = page.get_text("blocks", sort=True)
-        for block in blocks:
-            x0, y0, x1, y1, text, block_no, block_type = block
-            if block_type != 0:
-                continue
-            # Geometric skip: header/footer zones
-            if y0 < header_cutoff or y1 > footer_cutoff:
-                continue
-            for line in text.splitlines():
-                stripped = line.strip()
-                if not stripped:
-                    continue
-                # Skip standalone page markers
-                if re.match(r'^Page\s+\d+\s+of\s+\d+$', stripped, re.IGNORECASE):
-                    continue
-                # Clean ONLY true page markers like "MAC.APP.15/2022   2"
-                stripped = re.sub(r'\b(?:MAC\.APP|W\.P\.?|ARB\.P\.?|CS?\(?\w*\)?|CRL\.?|RFA?|FAO?|LPA?|OMP?|CW?|BAIL?)[\w\s\-\.\/]*\s{2,}\d+\s*$', ' ', stripped)
-                stripped = re.sub(r'\s{2,}', ' ', stripped).strip()
-                if stripped:
-                    lines.append(stripped)
+    for entry in entries:
+        key = (entry["page"], entry["block_id"], entry["line_id"])
+        stripped = entry["text"].strip()
+        if not stripped:
+            continue
+        if key in repeated_margin_lines:
+            continue
+        if PAGE_MARKER_RE.match(stripped):
+            continue
+        if TRAILING_PAGE_MARKER_RE.match(stripped):
+            continue
+        stripped = re.sub(r'\s{2,}', ' ', stripped).strip()
+        if stripped:
+            lines.append(stripped)
 
     doc.close()
     return lines, total_pages
@@ -636,56 +738,27 @@ CSS = """<style>
 
 
 def extract_blocks_from_pdf(pdf_bytes: bytes) -> list:
-    """Extract text blocks with font metadata using PyMuPDF."""
-    from collections import Counter
-    doc    = fitz.open(stream=pdf_bytes, filetype="pdf")
+    """Extract text lines with geometry and font metadata using PyMuPDF."""
+    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    entries = extract_line_entries(doc)
+    repeated_margin_lines = detect_repeated_margin_lines(entries, len(doc))
     blocks = []
-    for page_num, page in enumerate(doc):
-        for block in page.get_text("dict")["blocks"]:
-            if block.get("type") != 0:
-                continue
-            for line in block.get("lines", []):
-                line_text = ""
-                max_size  = 0
-                is_bold   = False
-                is_italic = False
-                min_x     = float("inf")
-                for span in line.get("spans", []):
-                    t = span.get("text", "").strip()
-                    if not t:
-                        continue
-                    line_text += t + " "
-                    size = span.get("size", 11)
-                    if size > max_size:
-                        max_size = size
-                    flags = span.get("flags", 0)
-                    if flags & 16:
-                        is_bold = True
-                    if flags & 2:
-                        is_italic = True
-                    x = span.get("origin", (0, 0))[0]
-                    if x < min_x:
-                        min_x = x
-                line_text = line_text.strip()
-                if not line_text:
-                    continue
-                # Filter noise
-                if "qrserver.com" in line_text or re.match(r'^\s*[\$#~]', line_text):
-                    continue
-                # Skip bare citation watermarks
-                if re.match(r'^\d{4}:\w+:\d+(?:-DB)?$', line_text):
-                    continue
-                # Skip bare page numbers
-                if re.match(r'^\d{1,4}$', line_text):
-                    continue
-                blocks.append({
-                    "text"  : line_text,
-                    "size"  : max_size,
-                    "bold"  : is_bold,
-                    "italic": is_italic,
-                    "indent": round(min_x),
-                    "page"  : page_num + 1
-                })
+
+    for entry in entries:
+        line_text = entry["text"]
+        key = (entry["page"], entry["block_id"], entry["line_id"])
+        if not line_text:
+            continue
+        if "qrserver.com" in line_text or re.match(r'^\s*[\$#~]', line_text):
+            continue
+        if re.match(r'^\d{4}:\w+:\d+(?:-DB)?$', line_text):
+            continue
+        if PAGE_MARKER_RE.match(line_text) or TRAILING_PAGE_MARKER_RE.match(line_text):
+            continue
+        if key in repeated_margin_lines:
+            continue
+        blocks.append(entry)
+
     doc.close()
     return blocks
 
@@ -828,11 +901,6 @@ def build_html(file_id: int, pdf_bytes: bytes, pdf_meta: dict = None) -> str:
         def flush():
             if current_text:
                 merged = " ".join(current_text).strip()
-                # Strip inline page marker artifacts e.g. "MAC.APP.15/2022   2"
-                merged = re.sub(
-                    r'\b(?:MAC\.APP|W\.P\.?|ARB\.P\.?|CS?\(?\w*\)?|CRL\.?|RFA?|FAO?|LPA?|OMP?|CW?|BAIL?)[\w\s\-\.\/]*\s{2,}\d+\s*$',
-                    '', merged
-                ).strip()
                 merged = re.sub(r'\s{2,}', ' ', merged).strip()
                 if merged:
                     if current_num:
