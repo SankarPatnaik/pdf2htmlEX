@@ -104,6 +104,16 @@ p {
   orphans: 3;
   widows: 3;
 }
+div.para-block {
+  margin: 0 0 0.95em;
+}
+ol, ul {
+  margin: 0.15em 0 1em 1.5em;
+  padding-left: 1.2em;
+}
+li {
+  margin-bottom: 0.4em;
+}
 blockquote {
   margin: 1rem 0;
   padding: 0.6rem 1rem;
@@ -206,6 +216,7 @@ class Element:
     y0: float
     payload: Any
     bbox: Optional[tuple[float, float, float, float]] = None
+    meta: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -214,6 +225,8 @@ class DocumentStats:
     typical_line_gap: float = 3.0
     median_left_indent: float = 72.0
     median_right_edge: float = 520.0
+    median_line_height: float = 12.0
+    is_judis_like: bool = False
 
 
 @dataclass
@@ -231,6 +244,8 @@ class Config:
     max_heading_words: int = 18
     drop_page_numbers: bool = True
     embed_css: bool = True
+    paragraph_hanging_indent: float = 12.0
+    list_indent_delta: float = 14.0
 
 
 class PDFSemanticHTMLConverter:
@@ -430,15 +445,27 @@ class PDFSemanticHTMLConverter:
         line_gaps: list[float] = []
         left_indents: list[float] = []
         right_edges: list[float] = []
+        line_heights: list[float] = []
+        line_widths: list[float] = []
+        numbered_line_count = 0
+        all_caps_short_line_count = 0
+        total_lines = 0
 
         for page in pages_raw:
             lines = page["lines"]
             for i, line in enumerate(lines):
                 if self._looks_like_margin_noise(line.text):
                     continue
+                total_lines += 1
                 font_sizes.append(line.font_size)
                 left_indents.append(line.x0)
                 right_edges.append(line.x1)
+                line_heights.append(line.height)
+                line_widths.append(line.width)
+                if self._starts_list_item(line.text):
+                    numbered_line_count += 1
+                if self._is_all_caps_heading_candidate(line.text):
+                    all_caps_short_line_count += 1
                 if i > 0:
                     prev = lines[i - 1]
                     gap = line.y0 - prev.y1
@@ -449,11 +476,27 @@ class PDFSemanticHTMLConverter:
         typical_line_gap = self._robust_median(line_gaps, default=3.0)
         median_left_indent = self._robust_median(left_indents, default=72.0)
         median_right_edge = self._robust_median(right_edges, default=520.0)
+        median_line_height = self._robust_median(line_heights, default=max(10.0, body_font_size + 1.0))
+        median_line_width = self._robust_median(line_widths, default=420.0)
+        wide_line_ratio = (
+            len([w for w in line_widths if w >= median_line_width * 0.90]) / len(line_widths)
+            if line_widths else 0.0
+        )
+        judis_signals = 0
+        if total_lines and (numbered_line_count / total_lines) >= 0.08:
+            judis_signals += 1
+        if total_lines and (all_caps_short_line_count / total_lines) >= 0.04:
+            judis_signals += 1
+        if wide_line_ratio >= 0.55:
+            judis_signals += 1
+        is_judis_like = judis_signals >= 2
         return DocumentStats(
             body_font_size=body_font_size,
             typical_line_gap=typical_line_gap,
             median_left_indent=median_left_indent,
             median_right_edge=median_right_edge,
+            median_line_height=median_line_height,
+            is_judis_like=is_judis_like,
         )
 
     def _render_page(
@@ -477,8 +520,8 @@ class PDFSemanticHTMLConverter:
         body_lines = [l for l in lines if not self._line_overlaps_reserved(l, reserved_regions)]
         body_chunks = self._group_lines_into_paragraphs(body_lines, stats)
         for chunk in body_chunks:
-            kind, text, bbox = self._classify_chunk(chunk, stats)
-            flow_elements.append(Element(kind=kind, y0=bbox[1], payload=text, bbox=bbox))
+            kind, payload, bbox = self._classify_chunk(chunk, stats)
+            flow_elements.append(Element(kind=kind, y0=bbox[1], payload=payload, bbox=bbox))
 
         for table in page_raw["tables"]:
             table_html = self._table_to_html(table["data"])
@@ -498,6 +541,9 @@ class PDFSemanticHTMLConverter:
             if elem.kind in {"p", "blockquote", "h1", "h2", "h3"}:
                 tag = elem.kind
                 parts.append(f"<{tag}>{self._preserve_inline_breaks(elem.payload)}</{tag}>")
+            elif elem.kind in {"ol", "ul"}:
+                list_items = "".join(f"<li>{self._preserve_inline_breaks(item)}</li>" for item in elem.payload)
+                parts.append(f"<{elem.kind}>{list_items}</{elem.kind}>")
             elif elem.kind == "table":
                 parts.append(elem.payload)
             elif elem.kind == "image":
@@ -515,41 +561,24 @@ class PDFSemanticHTMLConverter:
 
         for current in lines[1:]:
             prev = paragraphs[-1][-1]
-            gap = max(0.0, current.y0 - prev.y1)
-            same_font_band = abs(current.font_size - prev.font_size) <= self.config.body_font_tolerance
-            similar_indent = abs(current.x0 - prev.x0) <= self.config.same_indent_tolerance
-            similar_right_edge = abs(current.x1 - prev.x1) <= self.config.same_right_edge_tolerance
-            likely_continuation = self._is_likely_continuation(prev.text, current.text)
-            bullet_break = self._starts_list_item(current.text)
-            style_break = self._is_heading_like_text(current.text, current.font_size, stats)
-            large_gap = gap > max(8.0, stats.typical_line_gap * self.config.paragraph_gap_multiplier)
-            major_indent_change = abs(current.x0 - prev.x0) > max(14.0, self.config.same_indent_tolerance)
-
-            should_merge = (
-                same_font_band
-                and (similar_indent or similar_right_edge)
-                and not bullet_break
-                and not style_break
-                and not large_gap
-                and not major_indent_change
-                and likely_continuation
-            )
-
-            if should_merge:
-                paragraphs[-1].append(current)
-            else:
+            if self._is_paragraph_boundary(prev, current, stats):
                 paragraphs.append([current])
+            else:
+                paragraphs[-1].append(current)
         return paragraphs
 
-    def _classify_chunk(self, lines: list[Line], stats: DocumentStats) -> tuple[str, str, tuple[float, float, float, float]]:
+    def _classify_chunk(self, lines: list[Line], stats: DocumentStats) -> tuple[str, Any, tuple[float, float, float, float]]:
         bbox = self._merge_bboxes([line.bbox for line in lines])
         text = self._join_paragraph_lines([line.text for line in lines])
-        first = lines[0]
         avg_font = statistics.mean([line.font_size for line in lines])
 
         if self._is_heading_like_text(text, avg_font, stats):
             level = "h1" if avg_font >= stats.body_font_size + 3 else "h2" if avg_font >= stats.body_font_size + 1.5 else "h3"
             return level, text, bbox
+        if self._all_lines_are_list_items(lines):
+            list_kind = "ol" if self._is_ordered_list_item(lines[0].text) else "ul"
+            items = [self._strip_list_marker(line.text) for line in lines]
+            return list_kind, [html.escape(item) for item in items], bbox
         if self._is_blockquote(lines, stats):
             return "blockquote", text, bbox
         return "p", text, bbox
@@ -561,13 +590,21 @@ class PDFSemanticHTMLConverter:
         if font_size >= stats.body_font_size + 2.5:
             return True
         clean = text.strip()
-        if len(clean) <= 120 and clean.isupper() and len(words) <= 12:
+        if self._is_all_caps_heading_candidate(clean):
             return True
         if re.fullmatch(r"(?:\d+(?:\.\d+)*)\s+[A-Z][^.]{0,80}", clean):
+            return True
+        if re.fullmatch(r"\s*(?:JUDGMENT|ORDER|CORAM|PRAYER|APPEARANCE)\s*", clean, flags=re.I):
             return True
         if clean.endswith(":") and len(words) <= 10:
             return True
         return False
+
+    @staticmethod
+    def _is_all_caps_heading_candidate(text: str) -> bool:
+        clean = text.strip()
+        words = clean.split()
+        return bool(clean) and len(clean) <= 120 and clean.isupper() and len(words) <= 12
 
     def _is_blockquote(self, lines: list[Line], stats: DocumentStats) -> bool:
         if len(lines) < 2:
@@ -643,6 +680,57 @@ class PDFSemanticHTMLConverter:
                 out[-1] = prev + line.lstrip()
         return html.escape(out[-1] if out else "") if len(out) == 1 else html.escape(" ".join(out))
 
+    def _is_paragraph_boundary(self, prev: Line, current: Line, stats: DocumentStats) -> bool:
+        gap = max(0.0, current.y0 - prev.y1)
+        same_font_band = abs(current.font_size - prev.font_size) <= self.config.body_font_tolerance
+        indent_shift = current.x0 - prev.x0
+        right_edge_delta = abs(current.x1 - prev.x1)
+        similar_indent = abs(indent_shift) <= self.config.same_indent_tolerance
+        similar_right_edge = right_edge_delta <= self.config.same_right_edge_tolerance
+        major_indent_change = abs(indent_shift) > max(14.0, self.config.same_indent_tolerance)
+        large_gap = gap > max(
+            stats.median_line_height * 0.85,
+            stats.typical_line_gap * self.config.paragraph_gap_multiplier
+        )
+        heading_break = self._is_heading_like_text(current.text, current.font_size, stats)
+        current_is_list = self._starts_list_item(current.text)
+        prev_is_list = self._starts_list_item(prev.text)
+        continuation = self._is_likely_continuation(prev.text, current.text)
+        prev_sentence_end = prev.text.strip().endswith((".", "?", "!", ":"))
+        hanging_indent_continuation = (
+            indent_shift >= self.config.paragraph_hanging_indent
+            and gap <= max(stats.typical_line_gap * 1.25, stats.median_line_height * 0.35)
+        )
+        ragged_paragraph_end = (
+            prev.width < (stats.median_right_edge - stats.median_left_indent) * 0.62
+            and prev_sentence_end
+        )
+
+        if heading_break:
+            return True
+        if current_is_list and not prev_is_list:
+            return True
+        if current_is_list and prev_is_list:
+            list_gap_limit = max(stats.typical_line_gap * 1.8, stats.median_line_height * 0.55)
+            return gap > list_gap_limit or abs(indent_shift) > self.config.list_indent_delta
+        if not same_font_band and abs(current.font_size - prev.font_size) > 1.2:
+            return True
+        if large_gap:
+            return True
+        if major_indent_change and not hanging_indent_continuation:
+            return True
+        if stats.is_judis_like:
+            if prev_sentence_end and indent_shift >= self.config.paragraph_hanging_indent:
+                return True
+            if prev_sentence_end and not similar_right_edge and right_edge_delta > 28:
+                return True
+            if ragged_paragraph_end and not continuation:
+                return True
+        if prev_is_list and not current_is_list and current.x0 <= prev.x0 - self.config.list_indent_delta:
+            return True
+
+        return not ((similar_indent or similar_right_edge or hanging_indent_continuation) and continuation)
+
     def _should_insert_space(self, left: str, right: str) -> bool:
         if not left or not right:
             return False
@@ -671,6 +759,17 @@ class PDFSemanticHTMLConverter:
 
     def _starts_list_item(self, text: str) -> bool:
         return bool(re.match(r"^\s*(?:[•\-*]|\(?[0-9ivxIVX]+[.)])\s+", text))
+
+    def _is_ordered_list_item(self, text: str) -> bool:
+        return bool(re.match(r"^\s*\(?[0-9ivxIVX]+[.)]\s+", text))
+
+    def _strip_list_marker(self, text: str) -> str:
+        return re.sub(r"^\s*(?:[•\-*]|\(?[0-9ivxIVX]+[.)])\s+", "", text).strip()
+
+    def _all_lines_are_list_items(self, lines: list[Line]) -> bool:
+        if len(lines) < 2:
+            return False
+        return all(self._starts_list_item(line.text) for line in lines)
 
     def _build_document_html(self, title: str, pages_html: list[str]) -> str:
         css = DEFAULT_CSS
