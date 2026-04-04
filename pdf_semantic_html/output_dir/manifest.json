@@ -1,0 +1,20 @@
+{
+  "input_pdf": "1263.pdf",
+  "output_html": "output_dir/document.html",
+  "assets_dir": "output_dir/assets",
+  "page_count": 9,
+  "title": "SUPREME COURT OF INDIA",
+  "stats": {
+    "body_font_size": 10.0,
+    "typical_line_gap": 3.08331298828125,
+    "median_left_indent": 29.0,
+    "median_right_edge": 389.0,
+    "median_line_height": 12.490005493164062,
+    "is_judis_like": true
+  },
+  "header_footer_patterns": [
+    "http://judis.nic.in",
+    "page # of #",
+    "supreme court of india"
+  ]
+}
