@@ -1,0 +1,18 @@
+{
+  "input_pdf": "output_dir/13661_2020_31_1502_24349_Judgement_13-Oct-2020.pdf",
+  "output_html": "output_dir/13661/document.html",
+  "assets_dir": "output_dir/13661/assets",
+  "page_count": 13,
+  "title": "IN THE SUPREME COURT OF INDIA",
+  "stats": {
+    "body_font_size": 14.0,
+    "typical_line_gap": 16.85797119140625,
+    "median_left_indent": 107.5999984741211,
+    "median_right_edge": 524.7579956054688,
+    "median_line_height": 16.842010498046875,
+    "is_judis_like": true
+  },
+  "header_footer_patterns": [
+    "#"
+  ]
+}

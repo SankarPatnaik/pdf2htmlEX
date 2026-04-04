@@ -1,16 +1,14 @@
 {
   "input_pdf": "output_dir/38240.pdf",
-  "output_html": "output_dir/document.html",
-  "assets_dir": "output_dir/assets",
+  "output_html": "output_dir/38240/document.html",
+  "assets_dir": "output_dir/38240/assets",
   "page_count": 5,
   "title": "IN THE SUPREME COURT OF INDIA",
   "stats": {
     "body_font_size": 12.0,
     "typical_line_gap": 10.4000244140625,
     "median_left_indent": 104.4000015258789,
-    "median_right_edge": 546.7999877929688,
-    "median_line_height": 16.79998779296875,
-    "is_judis_like": true
+    "median_right_edge": 546.7999877929688
   },
   "header_footer_patterns": []
 }
