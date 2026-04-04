@@ -243,6 +243,7 @@ class Config:
     force_ocr: bool = False
     ocr_lang: str = "eng"
     ocr_dpi: int = 300
+    watermark_image_area_ratio: float = 0.22
 
 
 class PDFSemanticHTMLConverter:
@@ -323,6 +324,12 @@ class PDFSemanticHTMLConverter:
                 )
 
         images = self._extract_images(page, page_number)
+        images = self._filter_non_watermark_images(
+            images=images,
+            lines=lines,
+            page_width=float(page.rect.width),
+            page_height=float(page.rect.height),
+        )
         tables = self._extract_tables(page)
         return {
             "page_number": page_number,
@@ -348,6 +355,8 @@ class PDFSemanticHTMLConverter:
                 LOGGER.warning("Table extraction failed on page %s: %s", page.number + 1, exc)
                 continue
             bbox = tuple(table.bbox)
+            if not self._is_probable_real_table(data):
+                continue
             tables.append({"bbox": bbox, "data": data})
         return tables
 
@@ -507,13 +516,16 @@ class PDFSemanticHTMLConverter:
             likely_continuation = self._is_likely_continuation(prev.text, current.text, prev, current, stats)
             bullet_break = self._starts_list_item(current.text)
             style_break = self._is_heading_like_text(current.text, current.font_size, stats)
+            numbered_paragraph_break = self._is_numbered_paragraph_start(current.text)
             large_gap = gap > max(10.0, stats.typical_line_gap * self.config.paragraph_gap_multiplier)
             major_indent_change = abs(current.x0 - prev.x0) > 24.0
             paragraph_start_like = self._looks_like_paragraph_start(current.text) and not self._looks_like_short_continuation(current.text)
             prev_looks_wrapped = self._looks_like_visual_line_wrap(prev, stats)
 
             should_merge = False
-            if not bullet_break and not style_break and not large_gap:
+            if numbered_paragraph_break and prev.text.rstrip().endswith((".", "?", "!", ":", "”", "\"")):
+                should_merge = False
+            elif not bullet_break and not style_break and not large_gap:
                 if same_block and same_font_band:
                     should_merge = True
                 elif same_font_band and (similar_indent or similar_right_edge) and not major_indent_change and likely_continuation:
@@ -564,6 +576,8 @@ class PDFSemanticHTMLConverter:
     def _should_drop_line(self, line: Line, page_raw: dict[str, Any], patterns: set[str]) -> bool:
         norm = self._normalize_repetition_key(line.text)
         if norm in patterns:
+            return True
+        if self._looks_like_signature_artifact(line.text):
             return True
 
         top_limit = page_raw["height"] * self.config.header_band_ratio
@@ -765,6 +779,8 @@ class PDFSemanticHTMLConverter:
 
         if self._starts_list_item(curr_text):
             return False
+        if self._is_numbered_paragraph_start(curr_text):
+            return False
         if self._looks_like_heading_text(prev_text) or self._looks_like_heading_text(curr_text):
             return False
 
@@ -782,6 +798,76 @@ class PDFSemanticHTMLConverter:
         if re.match(r"^(?:\d{4}|\d{1,2}[/-]\d{1,2}[/-]\d{2,4})\b", curr_text):
             return True
 
+        return False
+
+    def _is_probable_real_table(self, table_data: list[list[Any]]) -> bool:
+        rows = [row for row in table_data if row]
+        if len(rows) < 2:
+            return False
+        col_count = max((len(r) for r in rows), default=0)
+        if col_count < 2:
+            return False
+
+        normalized_rows: list[list[str]] = []
+        for row in rows:
+            norm = [self._normalize_text(str(cell or "")) for cell in row]
+            normalized_rows.append(norm)
+
+        non_empty_cells = sum(1 for row in normalized_rows for c in row if c)
+        total_cells = sum(len(row) for row in normalized_rows)
+        if total_cells == 0:
+            return False
+        density = non_empty_cells / total_cells
+        non_empty_per_row = [sum(1 for c in row if c) for row in normalized_rows]
+        avg_non_empty_per_row = statistics.mean(non_empty_per_row) if non_empty_per_row else 0.0
+
+        if col_count >= 6 and density < 0.45:
+            return False
+        if avg_non_empty_per_row < 1.8:
+            return False
+        return True
+
+    def _filter_non_watermark_images(
+        self,
+        images: list[dict[str, Any]],
+        lines: list[Line],
+        page_width: float,
+        page_height: float,
+    ) -> list[dict[str, Any]]:
+        if not images:
+            return images
+        out: list[dict[str, Any]] = []
+        page_area = max(1.0, page_width * page_height)
+        text_rects = [fitz.Rect(line.bbox) for line in lines]
+
+        for image in images:
+            rect = fitz.Rect(image["bbox"])
+            area_ratio = (rect.width * rect.height) / page_area
+            if area_ratio < self.config.watermark_image_area_ratio:
+                out.append(image)
+                continue
+            overlap_count = sum(1 for tr in text_rects if tr.intersects(rect))
+            if overlap_count <= max(3, int(len(text_rects) * 0.15)):
+                out.append(image)
+        return out
+
+    @staticmethod
+    def _is_numbered_paragraph_start(text: str) -> bool:
+        return bool(re.match(r"^\s*\d{1,3}[.)]\s+[A-Za-z]", text))
+
+    @staticmethod
+    def _looks_like_signature_artifact(text: str) -> bool:
+        t = PDFSemanticHTMLConverter._normalize_text(text).lower()
+        if not t:
+            return False
+        if "signature not verified" in t:
+            return True
+        if "digitally signed by" in t:
+            return True
+        if re.fullmatch(r"reason:?", t):
+            return True
+        if "ist" in t and re.search(r"\d{1,2}:\d{2}:\d{2}", t):
+            return True
         return False
 
     def _merge_element_payload(self, left: str, right: str) -> str:
