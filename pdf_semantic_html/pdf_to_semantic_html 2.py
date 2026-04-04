@@ -862,11 +862,19 @@ class PDFSemanticHTMLConverter:
 
         for image in images:
             rect = fitz.Rect(image["bbox"])
+            overlap_count = sum(1 for tr in text_rects if tr.intersects(rect))
+            width_ratio = rect.width / max(1.0, page_width)
+            height_ratio = rect.height / max(1.0, page_height)
+            if (
+                width_ratio >= 0.88
+                and height_ratio >= 0.88
+                and overlap_count >= max(8, int(len(text_rects) * 0.25))
+            ):
+                continue
             area_ratio = (rect.width * rect.height) / page_area
             if area_ratio < self.config.watermark_image_area_ratio:
                 out.append(image)
                 continue
-            overlap_count = sum(1 for tr in text_rects if tr.intersects(rect))
             if not self._is_probable_watermark_image(
                 image=image,
                 rect=rect,
