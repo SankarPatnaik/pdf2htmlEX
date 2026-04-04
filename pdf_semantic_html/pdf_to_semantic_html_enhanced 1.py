@@ -486,12 +486,6 @@ class PDFSemanticHTMLConverter:
             table_html = self._table_to_html(table["data"])
             flow_elements.append(Element(kind="table", y0=table["bbox"][1], payload=table_html, bbox=table["bbox"]))
 
-        for image in page_raw["images"]:
-            figure_html = (
-                f'<figure><img src="{html.escape(image["src"])}" '
-                f'alt="{html.escape(image["alt"])}" loading="lazy"></figure>'
-            )
-            flow_elements.append(Element(kind="image", y0=image["bbox"][1], payload=figure_html, bbox=image["bbox"]))
 
         flow_elements.sort(key=lambda e: (round(e.y0, 1), 0 if e.kind in {"h1", "h2", "h3"} else 1))
         if self.config.post_merge_paragraphs:
@@ -503,8 +497,6 @@ class PDFSemanticHTMLConverter:
                 tag = elem.kind
                 parts.append(f"<{tag}>{self._preserve_inline_breaks(elem.payload)}</{tag}>")
             elif elem.kind == "table":
-                parts.append(elem.payload)
-            elif elem.kind == "image":
                 parts.append(elem.payload)
         if page_no != len(self.doc):
             parts.append('<hr class="page-break">')
