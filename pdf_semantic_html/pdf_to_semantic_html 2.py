@@ -246,6 +246,7 @@ class Config:
     embed_css: bool = True
     paragraph_hanging_indent: float = 12.0
     list_indent_delta: float = 14.0
+    watermark_image_area_ratio: float = 0.22
 
 
 class PDFSemanticHTMLConverter:
@@ -326,6 +327,12 @@ class PDFSemanticHTMLConverter:
 
         lines = self._merge_same_baseline_fragments(lines)
         images = self._extract_images(page, page_number)
+        images = self._filter_non_watermark_images(
+            images=images,
+            lines=lines,
+            page_width=float(page.rect.width),
+            page_height=float(page.rect.height),
+        )
         tables = self._extract_tables(page)
         return {
             "page_number": page_number,
@@ -383,6 +390,8 @@ class PDFSemanticHTMLConverter:
                 LOGGER.warning("Table extraction failed on page %s: %s", page.number + 1, exc)
                 continue
             bbox = tuple(table.bbox)
+            if not self._is_probable_real_table(data):
+                continue
             tables.append({"bbox": bbox, "data": data})
         return tables
 
@@ -616,6 +625,8 @@ class PDFSemanticHTMLConverter:
         norm = self._normalize_repetition_key(line.text)
         if norm in patterns:
             return True
+        if self._looks_like_signature_artifact(line.text):
+            return True
 
         top_limit = page_raw["height"] * self.config.header_band_ratio
         bottom_limit = page_raw["height"] * (1 - self.config.footer_band_ratio)
@@ -705,8 +716,11 @@ class PDFSemanticHTMLConverter:
             prev.width < (stats.median_right_edge - stats.median_left_indent) * 0.62
             and prev_sentence_end
         )
+        numbered_paragraph_break = bool(re.match(r"^\s*\d{1,3}[.)]\s+[A-Za-z]", current.text))
 
         if heading_break:
+            return True
+        if numbered_paragraph_break and prev_sentence_end:
             return True
         if current_is_list and not prev_is_list:
             return True
@@ -754,6 +768,72 @@ class PDFSemanticHTMLConverter:
         if curr[:1].islower():
             return True
         if prev[-1] not in '.?!:' and len(curr.split()) > 0:
+            return True
+        return False
+
+    def _is_probable_real_table(self, table_data: list[list[Any]]) -> bool:
+        rows = [row for row in table_data if row]
+        if len(rows) < 2:
+            return False
+        col_count = max((len(r) for r in rows), default=0)
+        if col_count < 2:
+            return False
+
+        normalized_rows: list[list[str]] = []
+        for row in rows:
+            norm = [self._normalize_text(str(cell or "")) for cell in row]
+            normalized_rows.append(norm)
+
+        non_empty_cells = sum(1 for row in normalized_rows for c in row if c)
+        total_cells = sum(len(row) for row in normalized_rows)
+        if total_cells == 0:
+            return False
+        density = non_empty_cells / total_cells
+        non_empty_per_row = [sum(1 for c in row if c) for row in normalized_rows]
+        avg_non_empty_per_row = statistics.mean(non_empty_per_row) if non_empty_per_row else 0.0
+
+        if col_count >= 6 and density < 0.45:
+            return False
+        if avg_non_empty_per_row < 1.8:
+            return False
+        return True
+
+    def _filter_non_watermark_images(
+        self,
+        images: list[dict[str, Any]],
+        lines: list[Line],
+        page_width: float,
+        page_height: float,
+    ) -> list[dict[str, Any]]:
+        if not images:
+            return images
+        out: list[dict[str, Any]] = []
+        page_area = max(1.0, page_width * page_height)
+        text_rects = [fitz.Rect(line.bbox) for line in lines]
+
+        for image in images:
+            rect = fitz.Rect(image["bbox"])
+            area_ratio = (rect.width * rect.height) / page_area
+            if area_ratio < self.config.watermark_image_area_ratio:
+                out.append(image)
+                continue
+            overlap_count = sum(1 for tr in text_rects if tr.intersects(rect))
+            if overlap_count <= max(3, int(len(text_rects) * 0.15)):
+                out.append(image)
+        return out
+
+    @staticmethod
+    def _looks_like_signature_artifact(text: str) -> bool:
+        t = PDFSemanticHTMLConverter._normalize_text(text).lower()
+        if not t:
+            return False
+        if "signature not verified" in t:
+            return True
+        if "digitally signed by" in t:
+            return True
+        if re.fullmatch(r"reason:?", t):
+            return True
+        if "ist" in t and re.search(r"\d{1,2}:\d{2}:\d{2}", t):
             return True
         return False
 
