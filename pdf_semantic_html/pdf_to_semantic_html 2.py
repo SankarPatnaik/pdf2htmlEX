@@ -627,6 +627,8 @@ class PDFSemanticHTMLConverter:
             return True
         if self._looks_like_signature_artifact(line.text):
             return True
+        if self._looks_like_watermark_text(line, page_raw):
+            return True
 
         top_limit = page_raw["height"] * self.config.header_band_ratio
         bottom_limit = page_raw["height"] * (1 - self.config.footer_band_ratio)
@@ -638,6 +640,41 @@ class PDFSemanticHTMLConverter:
                 if re.fullmatch(r"\d+", norm):
                     return True
         return False
+
+    @staticmethod
+    def _looks_like_watermark_text(line: Line, page_raw: dict[str, Any]) -> bool:
+        text = PDFSemanticHTMLConverter._normalize_text(line.text)
+        if not text:
+            return False
+        if len(text) > 90:
+            return False
+
+        upper = text.upper()
+        alpha_chars = [ch for ch in text if ch.isalpha()]
+        if not alpha_chars:
+            return False
+        uppercase_ratio = sum(1 for ch in alpha_chars if ch.isupper()) / len(alpha_chars)
+        words = text.split()
+        text_is_label_like = (
+            uppercase_ratio >= 0.82
+            and 1 <= len(words) <= 8
+            and not text.endswith((".", "?", "!", ":"))
+        )
+        known_watermark = bool(
+            re.search(r"\b(draft|confidential|sample|copy|duplicate|demo|preview|watermark)\b", upper)
+        )
+        if not text_is_label_like and not known_watermark:
+            return False
+
+        page_width = max(1.0, float(page_raw["width"]))
+        page_height = max(1.0, float(page_raw["height"]))
+        center_y = page_height * 0.5
+        in_mid_band = (page_height * 0.18) <= line.y0 <= (page_height * 0.82)
+        near_center_y = abs(((line.y0 + line.y1) * 0.5) - center_y) <= page_height * 0.32
+        wide_enough = (line.width / page_width) >= 0.34
+        very_large_font = line.font_size >= 20
+
+        return in_mid_band and near_center_y and wide_enough and very_large_font
 
     def _line_overlaps_reserved(self, line: Line, reserved_regions: list[fitz.Rect]) -> bool:
         rect = fitz.Rect(line.bbox)
