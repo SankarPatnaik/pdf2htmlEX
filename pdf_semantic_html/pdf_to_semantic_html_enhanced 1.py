@@ -324,19 +324,20 @@ class PDFSemanticHTMLConverter:
                 )
 
         images = self._extract_images(page, page_number)
-        images = self._filter_non_watermark_images(
+        filtered_images = self._filter_non_watermark_images(
             images=images,
             lines=lines,
             page_width=float(page.rect.width),
             page_height=float(page.rect.height),
         )
+        self._cleanup_filtered_image_assets(images, filtered_images)
         tables = self._extract_tables(page)
         return {
             "page_number": page_number,
             "width": float(page.rect.width),
             "height": float(page.rect.height),
             "lines": sorted(lines, key=lambda l: (round(l.y0, 1), round(l.x0, 1))),
-            "images": images,
+            "images": filtered_images,
             "tables": tables,
         }
 
@@ -388,7 +389,18 @@ class PDFSemanticHTMLConverter:
             out_name = f"page_{page_number + 1:04d}_img_{idx:03d}.{ext}"
             out_path = self.assets_dir / out_name
             out_path.write_bytes(image_dict["image"])
-            images.append({"bbox": bbox, "src": f"assets/{out_name}", "alt": out_name})
+            images.append(
+                {
+                    "bbox": bbox,
+                    "src": f"assets/{out_name}",
+                    "alt": out_name,
+                    "meta": {
+                        "width": int(image_dict.get("width", 0) or 0),
+                        "height": int(image_dict.get("height", 0) or 0),
+                        "colorspace": str(image_dict.get("cs-name", "") or ""),
+                    },
+                }
+            )
         return images
 
     def _detect_repeating_margin_text(self, pages_raw: list[dict[str, Any]]) -> set[str]:
@@ -847,9 +859,64 @@ class PDFSemanticHTMLConverter:
                 out.append(image)
                 continue
             overlap_count = sum(1 for tr in text_rects if tr.intersects(rect))
-            if overlap_count <= max(3, int(len(text_rects) * 0.15)):
+            if not self._is_probable_watermark_image(
+                image=image,
+                rect=rect,
+                area_ratio=area_ratio,
+                overlap_count=overlap_count,
+                text_rect_count=len(text_rects),
+                page_width=page_width,
+                page_height=page_height,
+            ):
                 out.append(image)
         return out
+
+    def _is_probable_watermark_image(
+        self,
+        image: dict[str, Any],
+        rect: fitz.Rect,
+        area_ratio: float,
+        overlap_count: int,
+        text_rect_count: int,
+        page_width: float,
+        page_height: float,
+    ) -> bool:
+        meta = image.get("meta", {})
+        colorspace = str(meta.get("colorspace", "")).lower()
+        is_grayscale = "gray" in colorspace
+        text_overlap_ratio = (overlap_count / text_rect_count) if text_rect_count else 0.0
+        center_x = page_width * 0.5
+        center_y = page_height * 0.5
+        image_center_x = (rect.x0 + rect.x1) * 0.5
+        image_center_y = (rect.y0 + rect.y1) * 0.5
+        near_center = (
+            abs(image_center_x - center_x) <= page_width * 0.22
+            and abs(image_center_y - center_y) <= page_height * 0.22
+        )
+
+        decorative_large_center = near_center and area_ratio >= self.config.watermark_image_area_ratio
+        likely_background_mark = text_overlap_ratio >= 0.35 and area_ratio >= 0.16
+        low_overlap_stamp = text_overlap_ratio <= 0.12 and area_ratio >= 0.30
+
+        if decorative_large_center and is_grayscale:
+            return True
+        if decorative_large_center and (likely_background_mark or low_overlap_stamp):
+            return True
+        return False
+
+    def _cleanup_filtered_image_assets(
+        self,
+        all_images: list[dict[str, Any]],
+        kept_images: list[dict[str, Any]],
+    ) -> None:
+        kept_src = {img.get("src") for img in kept_images}
+        for image in all_images:
+            src = image.get("src")
+            if not src or src in kept_src:
+                continue
+            image_path = self.output_dir / src
+            if image_path.exists():
+                image_path.unlink()
 
     @staticmethod
     def _is_numbered_paragraph_start(text: str) -> bool:
